@@ -9,17 +9,17 @@
 
 <div class="row">
     <div class="col-12">
-        <div class="col-xl-12 col-md-10 col-sm-12 m-auto text-center text-muted hidden-sm-down">
+        <div class="col-xl-12 col-md-10 col-sm-12 m-auto text-center text-muted">
             <div class="col-12">
                 <h2 class="fs-xxl fw-700">
                     @AppSettings.Value.Application.Name
-                    <small class="h4 fw-500 mt-3 mb-5">
+                    <small class="h4 fw-500 mt-3 mb-5 hidden-sm-down">
                         @AppSettings.Value.Application.Name is web application for managing domain data and vacation requests inside your Company<br />
                     </small>
                 </h2>
             </div>
         </div>
-        <div class="col-xl-4 col-md-10 col-sm-10 m-sm-auto">
+        <div class="col-xl-4 col-lg-6 col-md-8 col-sm-10 m-sm-auto">
             <div class="card p-4 rounded-plus bg-faded">
                 <h2 class="text-success fw-900"><span class="far fa-sign-in mr-2"></span>Register</h2>
                 <form id="js-register" method="post">

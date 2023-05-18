@@ -4,6 +4,7 @@ using LeavePlanner.Models;
 using LeavePlanner.Models.Exceptions;
 using LeavePlanner.Models.ViewModels.Employee;
 using LeavePlanner.Utilities.Extensions;
+using LeavePlanner.Utilities.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -109,8 +110,12 @@ namespace LeavePlanner.Persistence.Repositories
         public async Task DeleteAsync(int id, UserManager<ApplicationUser> userManager)
         {
             var employee = await GetEmployeeAsync(id);
-
             var roles = await userManager.GetRolesAsync(employee);
+
+            if (roles.Any(x => x.Equals(UserRoles.Admin, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                throw new DeleteNotAllowedException("Cannot delete admin account");
+            }
             await userManager.RemoveFromRolesAsync(employee, roles.ToArray());
 
             foreach (var leave in employee.Leaves)

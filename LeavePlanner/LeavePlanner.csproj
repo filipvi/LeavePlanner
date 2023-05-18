@@ -8,14 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\js\app\services\**" />
     <Compile Remove="wwwroot\manual\**" />
-    <Content Remove="wwwroot\js\app\services\**" />
     <Content Remove="wwwroot\manual\**" />
-    <EmbeddedResource Remove="wwwroot\js\app\services\**" />
     <EmbeddedResource Remove="wwwroot\manual\**" />
-    <None Remove="wwwroot\js\app\services\**" />
     <None Remove="wwwroot\manual\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\app\services\employee\detailsService.js" />
+    <None Include="wwwroot\js\app\services\employee\indexService.js" />
+    <None Include="wwwroot\js\app\services\leave\createService.js" />
+    <None Include="wwwroot\js\app\services\leave\indexService.js" />
   </ItemGroup>
 
   <ItemGroup>

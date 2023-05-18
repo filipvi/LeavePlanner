@@ -74,6 +74,7 @@
 
         Swal.fire({
             type: 'success',
+            icon: 'question',
             title: "<span class='fw-900'</span>" + title,
             text: message,
             showCancelButton: true,

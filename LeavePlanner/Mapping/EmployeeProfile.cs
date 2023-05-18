@@ -44,6 +44,7 @@ namespace LeavePlanner.Mapping
                     opt => opt.MapFrom(s =>
                         s.LeaveDaysPerYear.HasValue ? s.LeaveDaysPerYear.Value.ToString() : string.Empty))
                 .ForMember(d => d.UserName, opt => opt.MapFrom(s => s.UserName))
+                .ForMember(d => d.UserRole, opt => opt.MapFrom(s => s.MapUserRole()))
                 .ForMember(d => d.UserRoleId, opt => opt.MapFrom(s => s.MapUserRoleId()));
         }
     }

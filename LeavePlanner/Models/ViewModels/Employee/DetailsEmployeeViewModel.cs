@@ -2,7 +2,9 @@
 using LeavePlanner.Core;
 using LeavePlanner.Models.Exceptions;
 using LeavePlanner.Utilities.HelpData;
+using LeavePlanner.Utilities.Security;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace LeavePlanner.Models.ViewModels.Employee
 {
@@ -31,6 +33,9 @@ namespace LeavePlanner.Models.ViewModels.Employee
         public List<DetailsEmployeeLeavesViewModel> Leaves { get; set; }
         public HelpViewModel HelpModel { get; set; }
 
+        public bool DeleteEnabled { get; set; }
+        public bool EditEnabled { get; set; }
+
         public DetailsEmployeeViewModel()
         {
             Leaves = new List<DetailsEmployeeLeavesViewModel>();
@@ -58,6 +63,15 @@ namespace LeavePlanner.Models.ViewModels.Employee
             if (employee.Leaves.Any(x => !x.IsDeleted))
             {
                 mapper.Map(employee.Leaves.Where(x => !x.IsDeleted), Leaves);
+            }
+        }
+
+        public void PrepareManagement(ClaimsPrincipal user)
+        {
+            if (user.IsInRole(UserRoles.Admin) && UserRole.Equals(UserRoles.Employee, StringComparison.CurrentCultureIgnoreCase))
+            {
+                DeleteEnabled = true;
+                EditEnabled = true;
             }
         }
     }

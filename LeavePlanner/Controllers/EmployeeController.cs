@@ -95,6 +95,7 @@ namespace LeavePlanner.Controllers
             try
             {
                 await viewModel.PrepareData(_unitOfWork, _mapper);
+                viewModel.PrepareManagement(User);
                 return View(viewModel);
             }
             catch (Exception e)
@@ -122,8 +123,16 @@ namespace LeavePlanner.Controllers
             }
             catch (Exception e)
             {
-                Log.ControllerLog(this, e, id);
-                TempData["ErrorMsg"] = "Error fetching employee edit data";
+                if (e is ChangesNotAllowedException)
+                {
+                    TempData["ErrorMsg"] = e.Message;
+                }
+                else
+                {
+                    Log.ControllerLog(this, e, id);
+                    TempData["ErrorMsg"] = "Error fetching employee edit data";
+                }
+
                 return RedirectToAction(nameof(Details), new { id });
             }
         }
@@ -185,9 +194,17 @@ namespace LeavePlanner.Controllers
             }
             catch (Exception e)
             {
+                if (e is DeleteNotAllowedException)
+                {
+                    result.Message = e.Message;
+                }
+                else
+                {
+                    result.Message = "Error deleting employee";
+                    Log.ControllerLog(this, e, id);
+                }
                 result.Success = false;
-                result.Message = "Error deleting employee";
-                Log.ControllerLog(this, e, id);
+
             }
 
             return Json(result);
