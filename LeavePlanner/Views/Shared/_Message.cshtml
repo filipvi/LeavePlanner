@@ -1,0 +1,38 @@
+﻿<div id="infoMsgWrap">
+    @if (TempData["InfoMsg"] != null)
+    {
+        <div id="alert-info" class="alert alert-info alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Zatvori">
+                <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+            </button>
+            @TempData["InfoMsg"]
+        </div>
+    }
+    @if (TempData["ErrorMsg"] != null)
+    {
+        <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Zatvori">
+                <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+            </button>
+            @TempData["ErrorMsg"]
+        </div>
+    }
+    @if (TempData["SuccessMsg"] != null)
+    {
+        <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Zatvori">
+                <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+            </button>
+            @TempData["SuccessMsg"]
+        </div>
+    }
+    @if (TempData["WarningMsg"] != null)
+    {
+        <div id="alert-warning" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Zatvori">
+                <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+            </button>
+            @TempData["WarningMsg"]
+        </div>
+    }
+</div>

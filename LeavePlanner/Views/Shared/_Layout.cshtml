@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <partial name="_Head"/>
+    @await RenderSectionAsync("Header", required: false)
+</head>
+<body class="mod-bg-1 mod-nav-link @ViewBag.PreemptiveClass">
+<partial name="_ScriptsLoadingSaving"/>
+<div class="page-wrapper">
+    <div class="page-inner">
+        <partial name="_LeftPanel"/>
+        <div class="page-content-wrapper">
+            <partial name="_PageHeader"/>
+            <main id="js-page-content" role="main" class="page-content">
+                <partial name="_PageBreadCrumb"/>
+                @await RenderSectionAsync("PageHeading", required: false)
+                <partial name="_Message"/>
+                @RenderBody()
+                <partial name="_LoadingSpinner"/>
+            </main>
+            <partial name="_PageContentOverlay"/>
+            <partial name="_PageFooter"/>
+            <partial name="_ShortcutModal"/>
+            <partial name="_ColorProfileReference"/>
+            <partial name="_ContactsModal"/>
+        </div>
+    </div>
+</div>
+
+<partial name="_ShortcutMenu"/>
+<partial name="_ShortcutMessenger"/>
+<partial name="_PageSettings"/>
+<partial name="_GoogleAnalytics"/>
+<partial name="_ScriptsBasePlugins"/>
+<partial name="_ScriptMessageTemplate"/>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+<script>
+    datatableLanguageUrl = '@Url.Content("~/js/dataTables/Croatian.json")';
+    markInputsRequired();
+    MessageService.dismissAlertMessages();
+</script>
+
+<script type="text/javascript">
+    $(window).on('load',
+        function () {
+            layouts.fixedFooter('on');
+        });
+</script>
+</body>
+</html>

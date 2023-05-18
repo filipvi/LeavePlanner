@@ -1,0 +1,158 @@
+﻿@model LeavePlanner.Models.ViewModels.CreateViewModel
+
+@{
+    ViewBag.Title = "Forma za unos";
+    ViewData["Category1"] = "Forma";
+    ViewData["Category1Href"] = $"/{("test_index").Replace("_", "/")}";
+    ViewData["PageName"] = "test_create";
+}
+
+@*Header and subheader*@
+<div class="subheader">
+    <h1 class="subheader-title text-dark fw-700">
+        <i class="subheader-icon fas fa-plus-circle text-dark"></i> Novi djelatnik
+        <small>TEST TEST</small>
+    </h1>
+</div>
+
+@*Main panel*@
+<div class="panel">
+
+    @*Panel toolbar*@
+    <div class="panel-hdr bg-primary-700 text-white">
+        <h2>
+            <i class="fas fa-plus-circle mr-2"></i>Unos podataka
+        </h2>
+        <div class="panel-toolbar">
+            <button class="btn btn-panel btn-info waves-effect waves-themed" data-container="body" data-toggle="popover" data-placement="auto" title="TEST" data-content="aaaaaaaaaaa">
+                <i class="fas fa-question"></i>
+            </button>
+            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Proširi/Smanji">
+                <i class="fal fa-angle-double-up"></i>
+            </button>
+            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Cijeli ekran">
+                <i class="fal fa-arrows"></i>
+            </button>
+        </div>
+    </div>
+
+    @*Panel content*@
+    <div class="panel-container show">
+        <div class="panel-content">
+
+            <form asp-controller="Test" asp-action="Create" method="post" id="form">
+
+                <div class="panelTagCustom">
+                    Prikazan primjer forme za unos, naslov, podnaslov, breadcrumb, panel toolbar, required *, max lenght atribut
+                </div>
+
+                <hr class="navHr" />
+
+                <div class="row">
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="FirstName"></label>
+                                    <input type="text" asp-for="FirstName" class="form-control" />
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="LastName"></label>
+                                    <input type="text" asp-for="LastName" class="form-control" />
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="Email"></label>
+                                    <input type="email" asp-for="Email" class="form-control" />
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="PhoneNumber"></label>
+                                    <input type="tel" asp-for="PhoneNumber" class="form-control" />
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label asp-for="TestId" class="form-label"></label>
+                                    @Html.DropDownListFor(x => Model.TestId, Model.TestSelectList, "...", new {@class = "select2 form-control"})
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="TestId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label asp-for="CodexId" class="form-label"></label>
+                                    @Html.DropDownListFor(x => Model.CodexId, Model.CodexSelectList, "...", new {@class = "select2 form-control"})
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="CodexId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <label asp-for="Text" class="form-label"></label>
+                        <textarea type="text" asp-for="Text" class="form-control js-napomena" rows="3" onkeyup="countChars(this, @Model.TextMaxLength, 'napomena');"></textarea>
+                        <span class="help-block" id="napomena">Najviše @Model.TextMaxLength znakova</span>
+                        <div class="customValidationError">
+                            <span asp-validation-for="Text" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary waves-effect waves-themed mt-2 mb-3 float-right"><i class="fal fa-save mr-2"></i>Post</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+<script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/formplugins/inputmask/inputmask.bundle.js"></script>
+<script src="/js/app/helper/helper.js"></script>
+
+<script>
+     $(document).ready(function () {
+         
+         MessageService.showToastrMessage('Test toastr poruke', 'success');
+         MessageService.showAlertMessage('danger', 'Test alert poruke');
+         
+         $('.select2').select2({
+             language: 'hr'
+         });
+
+       $('.js-napomena').on('keyup',
+           function () {
+               var obj = this;
+               var maxLength = @Html.Raw(Json.Serialize(Model.TextMaxLength));
+               var nazivKontejnera = 'napomena';
+
+               countChars(obj,maxLength,nazivKontejnera);
+           });
+    });
+</script>
+}

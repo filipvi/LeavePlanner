@@ -1,0 +1,36 @@
+﻿{
+  "version": "4",
+  "lists": [
+    {
+      "title": "Dropdown",
+      "icon": "fal fa-info-circle text-white",
+      "roles": [],
+      "items": [
+        {
+          "title": "Početna - Prikaz osnovnih elemenata",
+          "showOnSeed": true,
+          "href": "test_index.html",
+          "roles": []
+        },
+        {
+          "title": "Datatables export",
+          "showOnSeed": true,
+          "href": "test_datatables.html",
+          "roles": []
+        },
+        {
+          "title": "Datatables search",
+          "showOnSeed": true,
+          "href": "test_datatables_search.html",
+          "roles": []
+        }
+      ]
+    },
+    {
+      "title": "Primjer forme za unos",
+      "icon": "fal fa-plus-circle text-white",
+      "href": "test_create.html",
+      "roles": []
+    }
+  ]
+}

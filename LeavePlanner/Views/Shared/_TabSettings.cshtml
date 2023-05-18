@@ -1,0 +1,92 @@
+﻿<div class="settings-panel">
+
+    <div class="mt-4 d-table w-100 px-5">
+        <div class="d-table-cell align-middle">
+            <h5 class="p-0">
+                Postavke pristupačnosti
+            </h5>
+        </div>
+    </div>
+
+    <div class="list" id="mbf">
+        <a href="#" onclick="return false;" class="btn btn-switch" data-action="toggle" data-class="mod-bigger-font"></a>
+        <span class="onoffswitch-title">Povećani font sadržaja</span>
+        <span class="onoffswitch-title-desc">Povećana veličina slova aplikacije </span>
+    </div>
+    <div class="list" id="mhc">
+        <a href="#" onclick="return false;" class="btn btn-switch" data-action="toggle" data-class="mod-high-contrast"></a>
+        <span class="onoffswitch-title">Tekst visokog kontrasta(WCAG 2 AA)</span>
+        <span class="onoffswitch-title-desc">4.5:1 kontrast teksta</span>
+    </div>
+    <div class="list" id="mcb">
+        <a href="#" onclick="return false;" class="btn btn-switch" data-action="toggle" data-class="mod-color-blind"></a>
+        <span class="onoffswitch-title">Daltonizam </span>
+        <span class="onoffswitch-title-desc">Nedostatak vida boja</span>
+    </div>
+
+    <div class="list" id="dan">
+        <a href="#" onclick="return false;" class="btn btn-switch" data-action="toggle"
+           data-class="mod-disable-animation"></a>
+        <span class="onoffswitch-title">Ukloni CSS animacije</span>
+        <span class="onoffswitch-title-desc">Uklanjanje CSS animacija na stranici</span>
+    </div>
+    <hr class="dividerHr w-75" />
+    <div class="list mt-3">
+        <span class="onoffswitch-title">Veličina fonta </span>
+        <div class="btn-group btn-group-sm btn-group-toggle my-2" data-toggle="buttons">
+            <label class="btn btn-default btn-sm" data-action="toggle-swap" data-class="root-text-sm" data-target="html">
+                <input type="radio" name="changeFrontSize"> Mali
+            </label>
+            <label class="btn btn-default btn-sm" data-action="toggle-swap" data-class="root-text" data-target="html">
+                <input type="radio" name="changeFrontSize" checked="checked"> Srednji
+            </label>
+            <label class="btn btn-default btn-sm" data-action="toggle-swap" data-class="root-text-lg" data-target="html">
+                <input type="radio" name="changeFrontSize"> Veliki
+            </label>
+            <label class="btn btn-default btn-sm" data-action="toggle-swap" data-class="root-text-xl" data-target="html">
+                <input type="radio" name="changeFrontSize"> Jako veliki
+            </label>
+        </div>
+    </div>
+    <hr class="dividerHr w-75" />
+
+    <div class="list mt-3">
+
+        <h5 class="p-0 pr-2 d-flex">
+            Prilagodba boja
+        </h5>
+
+        <div class="pl-5 pr-3 py-3">
+            <div class="ie-only alert alert-warning d-none">
+                <h6>Internet Explorer Issue</h6>
+                This particular component may not work as expected in Internet Explorer. Please use with caution.
+            </div>
+            <div class="row no-gutters">
+                <div class="col-6 pr-2 text-center">
+                    <div id="skin-default" data-action="toggle-replace" data-replaceclass="mod-skin-light mod-skin-dark" data-class="" data-toggle="tooltip" data-placement="top" title="" class="d-flex bg-white border border-primary rounded overflow-hidden text-success js-waves-on waves-effect waves-themed" data-original-title="Početne postavke" style="height: 80px">
+                        <div class="bg-primary-600 bg-primary-gradient px-2 pt-0 border-right border-primary"></div>
+                        <div class="d-flex flex-column flex-1">
+                            <div class="bg-white border-bottom border-primary py-1"></div>
+                            <div class="bg-faded flex-1 pt-3 pb-3 px-2">
+                                <div class="py-3" style="background:url('/img/demo/s-1.png') top left no-repeat;background-size: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    Svjetla tema
+                </div>
+                <div class="col-6 pl-2 text-center">
+                    <div id="skin-dark" data-action="toggle-replace" data-replaceclass="mod-skin-light" data-class="mod-skin-dark" data-toggle="tooltip" data-placement="top" title="" class="d-flex bg-white border border-dark rounded overflow-hidden text-success js-waves-on waves-effect waves-themed" data-original-title="Tamna tema" style="height: 80px">
+                        <div class="bg-fusion-500 px-2 pt-0 border-right"></div>
+                        <div class="d-flex flex-column flex-1">
+                            <div class="bg-fusion-600 border-bottom py-1"></div>
+                            <div class="bg-fusion-300 flex-1 pt-3 pb-3 px-2">
+                                <div class="py-3 opacity-30" style="background:url('/img/demo/s-1.png') top left no-repeat;background-size: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    Tamna tema
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

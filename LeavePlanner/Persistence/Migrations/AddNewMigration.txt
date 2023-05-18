@@ -1,0 +1,17 @@
+﻿add-migration NazivMigracije -Context ApplicationDbContext -OutputDir ".\Persistence\Migrations\"
+CMD: dotnet ef  migrations add NazivMigracije -c ApplicationDbContext -p SimpleLab -o Persistence\Migrations
+
+Update database:
+update-database -Context ApplicationDbContext
+CMD: dotnet ef database update -c ApplicationDbContext (potrebno biti u folderu projekta)
+
+Scaffold-DbContext "Server=HDINFO08;Database=MaticniPodaci_PRODUKCIJA;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Persistence -Tables Partner
+
+// REMOVING MIGRATION
+1. update-database -Migration UpdateSoilSamplingRequisitionAndSoilSamplesTable -Context ApplicationDbContext
+2. remove-migration -Context ApplicationDbContext
+CMD: dotnet ef migrations remove -p SimpleLab -c ApplicationDbContext
+
+// ROLL-BACK ALL MIGRATIONS
+1. update-database -Context ApplicationDbContext -Migration:0
+2. remove-migration -Context ApplicationDbContext

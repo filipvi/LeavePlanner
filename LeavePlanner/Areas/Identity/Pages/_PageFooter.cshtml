@@ -1,0 +1,8 @@
+﻿@using Microsoft.Extensions.Options
+@using LeavePlanner.Utilities.Settings
+@inject IOptions<AppSettings> _appSettings;
+
+<div class="d-block text-center text-white">
+    @DateTime.Now.Year © @_appSettings.Value.Application.Name by&nbsp;<a href="@_appSettings.Value.Company.Link" class="text-white opacity-40 fw-500" title="gotbootstrap.com" target="_blank">@_appSettings.Value.Company.Name
+    </a>
+</div>

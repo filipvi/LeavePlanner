@@ -1,0 +1,55 @@
+﻿@model LeavePlanner.Models.ViewModels.LandPageViewModel
+@inject IOptions<AppSettings> AppSettings
+
+@{
+    ViewData["Title"] = "Početna";
+    ViewData["PageName"] = "test_landPage";
+    ViewData["Category1"] = "Početna";
+}
+
+<div class="subheader">
+    <h2 class="subheader-title text-dark fw-700">
+        <i class="subheader-icon fa fa-th-list text-dark"></i> Primjer naslova
+        <partial name="_ModalHelpButton"/>
+        <small>
+            sa gumbom za pomoć
+        </small>
+    </h2>
+</div>
+
+<div class="col-sm-12 col-md-10 col-lg-8 col-xl-8 m-auto">
+    <div class="card p-4 rounded-plus bg-faded text-center">
+        <h1 class="fw-900 fs-xxl text-uppercase text-success p-2">@AppSettings.Value.Application.Name</h1>
+        <h5 class="fw-700">
+            Dobrodošli u @AppSettings.Value.Application.Name, web aplikaciju <a href="@AppSettings.Value.Company.Link" target="_blank" class="text-primary fw-900">@AppSettings.Value.Company.Name</a>
+        </h5>
+        <hr>
+        <h5 class="fw-700 col-xl-10 m-auto">
+            @AppSettings.Value.Application.Name -............-..........-
+        </h5>
+        <br>
+        <h5 class="fw-700 col-xl-10 m-auto">
+            Imate korisnički račun, prijavite se na linku ispod
+        </h5>
+        <a href="identity/account/login"
+           class="btn btn-outline-success btn-sm waves-effect waves-themed mt-3 ml-auto mr-auto">
+            <i class="fa fa-user-check mr-2"></i>
+            Prijava u aplikaciju
+        </a>
+    </div>
+</div>
+
+<div class="js-helpModal d-none">
+    <partial name="_HelpInfoPartial" model="@Model.HelpModel"/>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            displayLoading();
+            setTimeout(function () { hideDisplayLoading(); }, 1000);
+
+        });
+    </script>
+}

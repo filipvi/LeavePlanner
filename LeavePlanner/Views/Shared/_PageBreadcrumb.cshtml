@@ -1,0 +1,20 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IOptions<AppSettings> AppSettings
+
+@if (ViewBag.Category1?.Length > 0)
+{
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item"><a title="Početna stranica" asp-controller="Test" asp-action="Index"><i class="fas fa-home mr-2"></i>@AppSettings.Value.Application.Name</a></li>
+        @if (ViewBag.Category1?.Length > 0)
+        {
+            <li class="breadcrumb-item"><a href="@ViewBag.Category1Href">@ViewBag.Category1</a></li>
+        }
+        @if (ViewBag.Category2?.Length > 0)
+        {
+            <li class="breadcrumb-item">@ViewBag.Category2</li>
+        }
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+        <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+    </ol>
+}

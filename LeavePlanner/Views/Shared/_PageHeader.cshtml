@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+<header class="page-header" role="banner">
+    <partial name="_Logo"/>
+    <!-- DOC: mobile button appears during mobile width -->
+    <div class="hidden-lg-up">
+        <a href="#" class="header-btn btn press-scale-down" data-action="toggle" data-class="mobile-nav-on">
+            <i class="ni ni-menu"></i>
+        </a>
+    </div>
+    <div class="hidden-md-down dropdown-icon-menu position-relative">
+        <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-minify" title="Smanji navigacijsku traku">
+            <i class="ni ni-minify-nav"></i>
+        </a>
+    </div>
+    <div class="search">
+        <form class="app-forms hidden-xs-down" role="search" method="post" href="#" autocomplete="off">
+            <input type="text" id="search-field" class="form-control search-box" tabindex="1" placeholder="Search" name="#">
+            <a href="#" onclick="return false;" class="btn-danger btn-search-close js-waves-off d-none" data-action="toggle" data-class="mobile-search-on">
+                <i class="fal fa-times"></i>
+            </a>
+        </form>
+    </div>
+    <div class="ml-auto d-flex">
+        <a href="#" title="Postavke pristupačnosti" data-toggle="modal" data-target=".js-modal-settings" class="header-icon d-flex align-items-center justify-content-center ml-2">
+            <span class="fas fa-universal-access mr-2"></span>
+        </a>
+        <!-- app user menu -->
+        <div>
+            <a href="#" data-toggle="dropdown" title="Postavke" class="header-icon d-flex align-items-center justify-content-center ml-2">
+                <span class="fas fa-user"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
+                <partial name="_DropdownMenu"/>
+            </div>
+        </div>
+    </div>
+</header>
