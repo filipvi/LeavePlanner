@@ -2,6 +2,7 @@
 using LeavePlanner.Core.Models.Bussiness;
 using LeavePlanner.Models.Enums;
 using LeavePlanner.Models.Exceptions;
+using LeavePlanner.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeavePlanner.Persistence.Repositories
@@ -38,7 +39,7 @@ namespace LeavePlanner.Persistence.Repositories
         public async Task<Leave> GetLeaveAsync(int id)
         {
             return await _context.Leaves
-                .Include(x => x.ApplicationUser)
+                .Include(x => x.ApplicationUser).ThenInclude(y => y.Leaves)
                 .Include(x => x.Status)
                 .Include(x => x.ReplacementUsers).ThenInclude(y => y.ApplicationUser)
                                  .SingleOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
@@ -47,14 +48,6 @@ namespace LeavePlanner.Persistence.Repositories
         public async Task PendingAsync(int id)
         {
             var leave = await GetLeaveAsync(id);
-
-            if (leave.StatusId == (int)LeaveStatusEnums.Approved)
-            {
-                var employee =
-                    await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == leave.ApplicationUserId);
-                employee.RemainingLeaveDaysInYear += leave.WorkingDaysUsed;
-            }
-
             leave.StatusId = (int)LeaveStatusEnums.Pending;
         }
 
@@ -67,9 +60,8 @@ namespace LeavePlanner.Persistence.Repositories
         {
             var leave = await GetLeaveAsync(id);
 
-            if (leave.ApplicationUser.RemainingLeaveDaysInYear.HasValue && leave.ApplicationUser.RemainingLeaveDaysInYear.Value >= leave.WorkingDaysUsed)
+            if (leave.ApplicationUser.MapRemainingLeaveDaysInCurrentYear() >= leave.WorkingDaysUsed)
             {
-                leave.ApplicationUser.RemainingLeaveDaysInYear -= leave.WorkingDaysUsed;
                 leave.StatusId = (int)LeaveStatusEnums.Approved;
             }
             else
@@ -81,13 +73,6 @@ namespace LeavePlanner.Persistence.Repositories
         public async Task DeclineAsync(int id)
         {
             var leave = await GetLeaveAsync(id);
-
-            if (leave.StatusId == (int)LeaveStatusEnums.Approved)
-            {
-                var employee = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == leave.ApplicationUserId);
-                employee.RemainingLeaveDaysInYear += leave.WorkingDaysUsed;
-            }
-
             leave.StatusId = (int)LeaveStatusEnums.Declined;
         }
 

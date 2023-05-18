@@ -60,7 +60,7 @@ namespace LeavePlanner.Mapping
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.MapUserFullName()))
                 .ForMember(d => d.UserName, opt => opt.MapFrom(s => s.UserName))
                 .ForMember(d => d.UserRole, opt => opt.MapFrom(s => s.UserRoles.FirstOrDefault().Role.Name))
-                .ForMember(d => d.RemainingLeaveDaysInYear, opt => opt.MapFrom(s => s.RemainingLeaveDaysInYear));
+                .ForMember(d => d.RemainingLeaveDaysInYear, opt => opt.MapFrom(s => s.MapRemainingLeaveDaysInCurrentYear()));
 
             #endregion ApplicationUser, CreateLeaveViewModel
 

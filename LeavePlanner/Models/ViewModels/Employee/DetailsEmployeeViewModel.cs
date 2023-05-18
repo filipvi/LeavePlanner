@@ -24,8 +24,8 @@ namespace LeavePlanner.Models.ViewModels.Employee
         [Display(Name = "Leave days per year")]
         public string LeaveDaysPerYear { get; set; }
 
-        [Display(Name = "Remaining leave days")]
-        public string RemainingLeaveDays { get; set; }
+        [Display(Name = "Remaining days current year")]
+        public string RemainingDaysCurrentYear { get; set; }
 
         [Display(Name = "User role")]
         public string UserRole { get; set; }
@@ -68,7 +68,7 @@ namespace LeavePlanner.Models.ViewModels.Employee
 
         public void PrepareManagement(ClaimsPrincipal user)
         {
-            if (user.IsInRole(UserRoles.Admin) && UserRole.Equals(UserRoles.Employee, StringComparison.CurrentCultureIgnoreCase))
+            if (user.IsInRole(UserRoles.Admin) && !UserRole.Equals(UserRoles.Admin, StringComparison.CurrentCultureIgnoreCase))
             {
                 DeleteEnabled = true;
                 EditEnabled = true;

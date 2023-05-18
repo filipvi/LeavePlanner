@@ -62,7 +62,11 @@ namespace LeavePlanner.Models.ViewModels.Employee
                         ? employees.OrderBy(p => p.LastName).ThenBy(p => p.FirstName)
                         : employees.OrderByDescending(p => p.LastName).ThenByDescending(p => p.FirstName);
                     break;
-
+                case "3":
+                    employees = OrderDir.Equals("ASC", StringComparison.CurrentCultureIgnoreCase)
+                        ? employees.OrderBy(p => p.LeaveDaysPerYear).ThenBy(p => p.LeaveDaysPerYear)
+                        : employees.OrderByDescending(p => p.LeaveDaysPerYear).ThenByDescending(p => p.LeaveDaysPerYear);
+                    break;
             }
 
             return employees;

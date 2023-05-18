@@ -4,9 +4,9 @@ using LeavePlanner.Core.Interfaces;
 using LeavePlanner.Core.Models.Bussiness;
 using LeavePlanner.Models.Enums;
 using LeavePlanner.Models.Exceptions;
+using LeavePlanner.Utilities.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 
 namespace LeavePlanner.Models.ViewModels.Leave
 {
@@ -65,24 +65,15 @@ namespace LeavePlanner.Models.ViewModels.Leave
 
         public async Task PrepareData(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            var isValidFrom = DateTime.TryParseExact(DateFrom,
-                "yyyy-MM-dd",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out DateTime startDate);
+            var currentDate = DateTime.Now;
 
-            var isValidTo = DateTime.TryParseExact(DateTo,
-                "yyyy-MM-dd",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out DateTime endDate);
+            DateTime? startDate = DateFrom.StringToExactDateTime();
+            DateTime? endDate = DateTo.StringToExactDateTime();
 
-            if (!isValidFrom || !isValidTo)
+            if (startDate == null || endDate == null)
             {
                 throw new CreateNotAllowedException("Date parse error!");
             }
-
-            var currentDate = DateTime.Now;
 
             if (startDate <= currentDate)
             {
@@ -101,32 +92,28 @@ namespace LeavePlanner.Models.ViewModels.Leave
 
             mapper.Map(employee, this);
 
-
-
-            bool overlapExists = HaveRangeOverlap(employee.Leaves.Where(x => !x.IsDeleted && (x.StatusId == (int)LeaveStatusEnums.Approved || x.StatusId == (int)LeaveStatusEnums.Pending)).ToList(), startDate, endDate);
+            bool overlapExists = HaveRangeOverlap(employee.Leaves
+                .Where(x => !x.IsDeleted &&
+                            (x.StatusId == (int)LeaveStatusEnums.Approved || x.StatusId == (int)LeaveStatusEnums.Pending))
+                .ToList(), startDate.Value, endDate.Value);
 
             if (overlapExists)
             {
                 throw new CreateNotAllowedException("You already booked leave in choosen period!");
             }
 
-
-
-            int countOfWorkingDays = 0;
             while (startDate < endDate)
             {
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && !_holidaysDates.Contains(startDate))
+                if (startDate.Value.DayOfWeek != DayOfWeek.Saturday && startDate.Value.DayOfWeek != DayOfWeek.Sunday && !_holidaysDates.Contains(startDate.Value))
                 {
                     WorkingDaysUsed++;
                 }
 
-                startDate = startDate.AddDays(1);
+                startDate = startDate.Value.AddDays(1);
             }
 
-            if (!employee.RemainingLeaveDaysInYear.HasValue ||
-                    countOfWorkingDays > employee.RemainingLeaveDaysInYear.Value ||
-                    (employee.RemainingLeaveDaysInYear.HasValue &&
-                    employee.RemainingLeaveDaysInYear.Value == 0))
+            if (employee.MapRemainingLeaveDaysInCurrentYear() == 0 ||
+                WorkingDaysUsed > employee.MapRemainingLeaveDaysInCurrentYear())
             {
                 throw new CreateNotAllowedException("You don't have available days!");
             }
@@ -177,24 +164,15 @@ namespace LeavePlanner.Models.ViewModels.Leave
             var employee = await unitOfWork.EmployeeRepository
                 .GetEmployeeAsync(EmployeeId);
 
-            var isValidFrom = DateTime.TryParseExact(DateFrom,
-                "yyyy-MM-dd",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out DateTime startDate);
+            DateTime? startDate = DateFrom.StringToExactDateTime();
+            DateTime? endDate = DateTo.StringToExactDateTime();
 
-            var isValidTo = DateTime.TryParseExact(DateTo,
-                "yyyy-MM-dd",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out DateTime endDate);
-
-            if (!isValidFrom || !isValidTo)
+            if (startDate == null || endDate == null)
             {
                 throw new CreateNotAllowedException("Date parse error!");
             }
 
-            bool validDates = HaveRangeOverlap(employee.Leaves.Where(x => !x.IsDeleted && (x.StatusId == (int)LeaveStatusEnums.Approved || x.StatusId == (int)LeaveStatusEnums.Pending)).ToList(), startDate, endDate);
+            bool validDates = HaveRangeOverlap(employee.Leaves.Where(x => !x.IsDeleted && (x.StatusId == (int)LeaveStatusEnums.Approved || x.StatusId == (int)LeaveStatusEnums.Pending)).ToList(), startDate.Value, endDate.Value);
 
             if (validDates)
             {
@@ -202,7 +180,7 @@ namespace LeavePlanner.Models.ViewModels.Leave
             }
 
             int countOfWorkingDays = 0;
-            DateTime currentDate = startDate;
+            DateTime currentDate = startDate.Value;
 
             while (currentDate < endDate)
             {
