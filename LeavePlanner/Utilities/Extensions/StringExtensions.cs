@@ -14,7 +14,8 @@ namespace LeavePlanner.Utilities.Extensions
         /// </summary>
         public static string DecimalToString(this decimal? data, string format)
         {
-            if (!data.HasValue) return string.Empty;
+            if (!data.HasValue)
+                return string.Empty;
 
             return data.Value.ToString(format);
         }
@@ -44,7 +45,8 @@ namespace LeavePlanner.Utilities.Extensions
         /// </summary>
         public static string DateToString(this DateTime? data)
         {
-            if (!data.HasValue) return string.Empty;
+            if (!data.HasValue)
+                return string.Empty;
 
             string format = "dd.MM.yyyy";
 
@@ -66,7 +68,8 @@ namespace LeavePlanner.Utilities.Extensions
         /// </summary>
         public static string NumberToString(this int? data)
         {
-            if (!data.HasValue) return string.Empty;
+            if (!data.HasValue)
+                return string.Empty;
 
             return data.Value.ToString();
         }
@@ -91,6 +94,15 @@ namespace LeavePlanner.Utilities.Extensions
             }
 
             return value.Trim();
+        }
+
+        public static DateTime? StringToExactDateTime(this string date)
+        {
+            if (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate))
+            {
+                return startDate;
+            }
+            return null;
         }
     }
 }

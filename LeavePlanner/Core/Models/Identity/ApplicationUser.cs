@@ -9,7 +9,6 @@ namespace LeavePlanner.Core.Models.Identity
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int? LeaveDaysPerYear { get; set; }
-        public int? RemainingLeaveDaysInYear { get; set; }
 
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
         public virtual ICollection<Leave> Leaves { get; set; }

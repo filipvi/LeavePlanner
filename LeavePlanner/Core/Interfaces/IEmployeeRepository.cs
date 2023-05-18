@@ -15,7 +15,6 @@ namespace LeavePlanner.Core.Interfaces
         Task<List<SelectListItem>> GetUserRoleSelectListAsync();
         Task EditAsync(EditEmployeeViewModel viewModel);
         Task DeleteAsync(int id, UserManager<ApplicationUser> userManager);
-        Task<string> GetMaxDateForEmployeeAsync(int employeeId, string dateFrom, IHolidayService holidayService);
         Task<ApplicationUser> SearchEmployeeAsync(string search);
     }
 }

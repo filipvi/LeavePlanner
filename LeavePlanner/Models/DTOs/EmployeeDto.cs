@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string UserRole { get; set; }
-        public string LeaveDaysPerYear { get; set; }
-        public string RemainingDays { get; set; }
+        public int LeaveDaysPerYear { get; set; }
+        public int RemainingDaysCurrentYear { get; set; }
     }
 }

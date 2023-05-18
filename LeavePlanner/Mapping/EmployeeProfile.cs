@@ -16,15 +16,15 @@ namespace LeavePlanner.Mapping
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.MapUserFullName()))
                 .ForMember(d => d.Email, opt => opt.MapFrom(s => s.Email))
                 .ForMember(d => d.UserRole, opt => opt.MapFrom(s => s.MapUserRole()))
-                .ForMember(d => d.LeaveDaysPerYear, opt => opt.MapFrom(s => s.LeaveDaysPerYear.HasValue ? s.LeaveDaysPerYear.Value.ToString() : string.Empty))
-                .ForMember(d => d.RemainingDays, opt => opt.MapFrom(s => s.RemainingLeaveDaysInYear.HasValue ? s.RemainingLeaveDaysInYear.Value.ToString() : string.Empty));
+                .ForMember(d => d.LeaveDaysPerYear, opt => opt.MapFrom(s => s.LeaveDaysPerYear.HasValue ? s.LeaveDaysPerYear.Value : 0))
+                .ForMember(d => d.RemainingDaysCurrentYear, opt => opt.MapFrom(s => s.MapRemainingLeaveDaysInCurrentYear()));
 
             CreateMap<ApplicationUser, DetailsEmployeeViewModel>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.FirstName, opt => opt.MapFrom(s => s.FirstName))
                 .ForMember(d => d.LastName, opt => opt.MapFrom(s => s.LastName))
                 .ForMember(d => d.LeaveDaysPerYear, opt => opt.MapFrom(s => s.LeaveDaysPerYear.HasValue ? s.LeaveDaysPerYear.Value.ToString() : string.Empty))
-                .ForMember(d => d.RemainingLeaveDays, opt => opt.MapFrom(s => s.RemainingLeaveDaysInYear.HasValue ? s.RemainingLeaveDaysInYear.Value.ToString() : string.Empty))
+                .ForMember(d => d.RemainingDaysCurrentYear, opt => opt.MapFrom(s => s.MapRemainingLeaveDaysInCurrentYear()))
                 .ForMember(d => d.UserName, opt => opt.MapFrom(s => s.UserName))
                 .ForMember(d => d.UserRole, opt => opt.MapFrom(s => s.MapUserRole()))
                 .ForMember(d => d.Leaves, opt => opt.Ignore());

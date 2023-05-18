@@ -12,18 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeavePlanner.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230514191339_Initial")]
-    partial class Initial
+    [Migration("20230518073402_Initia")]
+    partial class Initia
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("LeavePlanner.Core.Models.Bussiness.Leave", b =>
                 {
@@ -31,7 +30,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
@@ -66,7 +65,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
@@ -92,7 +91,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -115,7 +114,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -145,7 +144,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -193,9 +192,6 @@ namespace LeavePlanner.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RemainingLeaveDaysInYear")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -240,7 +236,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -264,7 +260,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -329,7 +325,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(0);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditEntryID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditEntryID"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(255)
@@ -371,7 +367,7 @@ namespace LeavePlanner.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(0);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditEntryPropertyID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditEntryPropertyID"), 1L, 1);
 
                     b.Property<int>("AuditEntryID")
                         .HasColumnType("int")
@@ -407,7 +403,7 @@ namespace LeavePlanner.Persistence.Migrations
             modelBuilder.Entity("LeavePlanner.Core.Models.Bussiness.Leave", b =>
                 {
                     b.HasOne("LeavePlanner.Core.Models.Identity.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Leaves")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -520,6 +516,8 @@ namespace LeavePlanner.Persistence.Migrations
 
             modelBuilder.Entity("LeavePlanner.Core.Models.Identity.ApplicationUser", b =>
                 {
+                    b.Navigation("Leaves");
+
                     b.Navigation("UserRoles");
                 });
 

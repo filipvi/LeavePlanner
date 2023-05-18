@@ -55,50 +55,46 @@ namespace LeavePlanner.Persistence
                     _userManager.AddToRoleAsync(admin, UserRoles.Admin).Wait();
                 }
 
-                ApplicationUser user1 = new ApplicationUser
+                ApplicationUser emp1 = new ApplicationUser
                 {
-                    UserName = "employee@employee.hr",
-                    Email = "employee@employee.hr",
+                    UserName = "employee1@employee1.hr",
+                    Email = "employee1@employee1.hr",
                     FirstName = "Employee 1",
-                    LastName = "Employee",
-                    LeaveDaysPerYear = 20,
-                    RemainingLeaveDaysInYear = 15
+                    LastName = "Employee 1",
+                    LeaveDaysPerYear = 20
                 };
-                _ = _userManager.CreateAsync(user1, "Password.1!").Result;
+                _ = _userManager.CreateAsync(emp1, "Password.1!").Result;
                 if (resultAdmin.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user1, UserRoles.Employee).Wait();
+                    _userManager.AddToRoleAsync(emp1, UserRoles.Employee).Wait();
                 }
 
-
-                ApplicationUser user2 = new ApplicationUser
+                ApplicationUser emp2 = new ApplicationUser
                 {
                     UserName = "employee2@employee2.hr",
                     Email = "employee2@employee2.hr",
                     FirstName = "Employee 2",
                     LastName = "Employee 2",
-                    LeaveDaysPerYear = 25,
-                    RemainingLeaveDaysInYear = 23
+                    LeaveDaysPerYear = 25
                 };
-                _ = _userManager.CreateAsync(user2, "Password.1!").Result;
+                _ = _userManager.CreateAsync(emp2, "Password.1!").Result;
                 if (resultAdmin.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user2, UserRoles.Employee).Wait();
+                    _userManager.AddToRoleAsync(emp2, UserRoles.Employee).Wait();
                 }
 
-                ApplicationUser user3 = new ApplicationUser
+                ApplicationUser emp3 = new ApplicationUser
                 {
                     UserName = "employee3@employee3.hr",
                     Email = "employee3@employee3.hr",
                     FirstName = "Employee 3",
                     LastName = "Employee 3",
-                    LeaveDaysPerYear = 22,
-                    RemainingLeaveDaysInYear = 22
+                    LeaveDaysPerYear = 28
                 };
-                _ = _userManager.CreateAsync(user3, "Password.1!").Result;
+                _ = _userManager.CreateAsync(emp3, "Password.1!").Result;
                 if (resultAdmin.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user3, UserRoles.Employee).Wait();
+                    _userManager.AddToRoleAsync(emp3, UserRoles.Employee).Wait();
                 }
             }
 
@@ -106,15 +102,15 @@ namespace LeavePlanner.Persistence
             {
                 var leaveStatuses = new List<LeaveStatus>
                 {
-                    new LeaveStatus()
+                    new()
                     {
                         Name = "Pending"
                     },
-                    new LeaveStatus()
+                    new()
                     {
                         Name = "Declined"
                     },
-                    new LeaveStatus()
+                    new()
                     {
                         Name = "Approved"
                     }
@@ -128,7 +124,7 @@ namespace LeavePlanner.Persistence
             {
                 var leaves = new List<Leave>
                 {
-                    new Leave
+                    new()
                     {
                         WorkingDaysUsed = 5,
                         ApplicationUserId = 2,
@@ -137,17 +133,17 @@ namespace LeavePlanner.Persistence
                         StatusId = (int)LeaveStatusEnums.Approved,
                         ReplacementUsers = new List<LeaveReplacementUser>
                         {
-                            new LeaveReplacementUser
+                            new()
                             {
                                 ApplicationUserId = 2
                             },
-                            new LeaveReplacementUser
+                            new()
                             {
                                 ApplicationUserId = 3
                             },
                         }
                     },
-                    new Leave
+                    new()
                     {
                         WorkingDaysUsed = 2,
                         ApplicationUserId = 3,
@@ -156,17 +152,17 @@ namespace LeavePlanner.Persistence
                         StatusId = (int)LeaveStatusEnums.Approved,
                         ReplacementUsers = new List<LeaveReplacementUser>
                         {
-                            new LeaveReplacementUser
+                            new()
                             {
                                 ApplicationUserId = 3
                             },
-                            new LeaveReplacementUser
+                            new()
                             {
                                 ApplicationUserId = 4
                             },
                         }
                     },
-                    new Leave
+                    new()
                     {
                         WorkingDaysUsed = 2,
                         ApplicationUserId = 3,
@@ -175,11 +171,11 @@ namespace LeavePlanner.Persistence
                         StatusId = (int)LeaveStatusEnums.Pending,
                         ReplacementUsers = new List<LeaveReplacementUser>
                         {
-                            new LeaveReplacementUser
+                            new()
                             {
                                 ApplicationUserId = 1
                             },
-                            new LeaveReplacementUser
+                            new()
                             {
                                 ApplicationUserId = 2
                             },

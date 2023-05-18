@@ -55,7 +55,7 @@
                      }
                 },
                 { data: 'leaveDaysPerYear' },
-                { data: 'remainingDays' },
+                { data: 'remainingDaysCurrentYear' },
                 { data: 'id'}
             ],
             'columnDefs': [

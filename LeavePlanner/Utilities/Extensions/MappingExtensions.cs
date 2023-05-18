@@ -1,15 +1,30 @@
 ﻿#region
 
-#endregion
-
 using LeavePlanner.Core.Models.Bussiness;
 using LeavePlanner.Core.Models.Identity;
 using LeavePlanner.Models.Enums;
+
+#endregion
 
 namespace LeavePlanner.Utilities.Extensions
 {
     public static class MappingExtensions
     {
+        public static int MapRemainingLeaveDaysInCurrentYear(this ApplicationUser user)
+        {
+            int remainingDaysCurrentYear = 0;
+            var currentYear = DateTime.Now.Year;
+
+            if (user == null || !user.LeaveDaysPerYear.HasValue || user.LeaveDaysPerYear.Value == 0)
+            {
+                return remainingDaysCurrentYear;
+            }
+
+            var existingLeaves = user.Leaves
+                .Where(x => !x.IsDeleted && x.StatusId == (int)LeaveStatusEnums.Approved && x.StartDate.Year == currentYear);
+            return user.LeaveDaysPerYear.Value - existingLeaves.Sum(x => x.WorkingDaysUsed);
+        }
+
         public static string MapUserFullName(this ApplicationUser user)
         {
             string fullName = string.Empty;

@@ -44,7 +44,8 @@ namespace LeavePlanner.Persistence.Repositories
         public IQueryable<ApplicationUser> GetEmployeesQueryable()
         {
             return _context.ApplicationUsers
-                .Include(x => x.UserRoles).ThenInclude(y => y.Role);
+                .Include(x => x.UserRoles).ThenInclude(y => y.Role)
+                .Include(x => x.Leaves).ThenInclude(y => y.Status);
         }
 
         public async Task<int> GetEmployeesCountAsync()
@@ -116,6 +117,7 @@ namespace LeavePlanner.Persistence.Repositories
             {
                 throw new DeleteNotAllowedException("Cannot delete admin account");
             }
+
             await userManager.RemoveFromRolesAsync(employee, roles.ToArray());
 
             foreach (var leave in employee.Leaves)
@@ -124,19 +126,6 @@ namespace LeavePlanner.Persistence.Repositories
             }
 
             await userManager.DeleteAsync(employee);
-        }
-
-        public async Task<string> GetMaxDateForEmployeeAsync(int employeeId, string dateFrom,
-            IHolidayService holidayService)
-        {
-            var holidays = await holidayService.GetHolidaysForCountryAsync();
-            var holidayDates = holidays.Select(x => x.Date).Distinct().ToList();
-            var employee = await GetEmployeeAsync(employeeId);
-
-            DateTime startDate = dateFrom.StringToDateTime();
-            DateTime endDate = PrepareEndDate(startDate, employee.RemainingLeaveDaysInYear.Value, holidayDates);
-
-            return endDate.DateToString();
         }
 
 
