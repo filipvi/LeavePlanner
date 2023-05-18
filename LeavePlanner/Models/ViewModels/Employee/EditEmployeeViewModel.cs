@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using LeavePlanner.Core;
+using LeavePlanner.Models.Exceptions;
 using LeavePlanner.Utilities.HelpData;
+using LeavePlanner.Utilities.Security;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +23,8 @@ namespace LeavePlanner.Models.ViewModels.Employee
         [Display(Name = "User role")]
         public int? UserRoleId { get; set; }
 
+        public string UserRole { get; set; }
+
         public List<SelectListItem> UserRoleSelectList { get; set; }
         public HelpViewModel HelpModel { get; set; }
 
@@ -40,6 +44,11 @@ namespace LeavePlanner.Models.ViewModels.Employee
         {
             var employee = await unitOfWork.EmployeeRepository.GetEmployeeAsync(Id);
             mapper.Map(employee, this);
+
+            if (UserRole.Equals(UserRoles.Admin))
+            {
+                throw new ChangesNotAllowedException("Cannot edit admin account");
+            }
         }
 
         public async Task PrepareSelectList(IUnitOfWork unitOfWork)
