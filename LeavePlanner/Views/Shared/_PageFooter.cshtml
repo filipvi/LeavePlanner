@@ -1,0 +1,42 @@
+﻿@inject IOptions<AppSettings> AppSettings
+@{
+    var isTest = AppSettings.Value.Application.IsTest ? "" : "d-none";
+}
+
+@*LAPTOP*@
+<footer class="page-footer hidden-xs-down" role="contentinfo">
+    <div class="d-flex align-items-center flex-1 text-muted">
+        <span class="fw-700">
+            @DateTime.Now.Year © @AppSettings.Value.Application.Name @AppSettings.Value.Application.Version
+        </span>
+    </div>
+    <div>
+        <ul class="list-table m-0">
+            <li class="pl-3">
+                <div class="@isTest text-danger fw-900 fs-xl ml-auto mr-auto">
+                    TESTNA VERZIJA
+                </div>
+            </li>
+            <div class="vl"></div>
+            <li class="pl-3">
+                <a href="javascript:void(0)" class="text-secondary fw-700"><span class="fas fa-download mr-2"> </span>Upute za korištenje</a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+@*MOBILE*@
+<footer class="page-footer hidden-sm-up" role="contentinfo">
+    <div class="m-auto">
+        <span class="fw-700">
+            @DateTime.Now.Year © @AppSettings.Value.Application.Name @AppSettings.Value.Application.Version
+        </span>
+    </div>
+    <div class="vl mr-2"></div>
+
+    <div class="m-auto">
+        <a href="~/manual/manual.pdf" download="" class="text-secondary fw-700">
+            <span class="fas fa-download mr-2"></span>Upute
+        </a>
+    </div>
+</footer>

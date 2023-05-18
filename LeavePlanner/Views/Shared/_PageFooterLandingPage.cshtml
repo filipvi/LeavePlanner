@@ -1,0 +1,6 @@
+﻿
+@inject IOptions<AppSettings> AppSettings
+
+<div class="d-block text-center text-white">
+    2019 © @AppSettings.Value.Application.Name by&nbsp;<a href="@AppSettings.Value.Company.Name" class="text-white opacity-40 fw-500" title="@AppSettings.Value.Company.Name" target="_blank">@AppSettings.Value.Company.Name</a>
+</div>

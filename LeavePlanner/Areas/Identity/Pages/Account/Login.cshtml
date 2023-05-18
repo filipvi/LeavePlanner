@@ -1,0 +1,129 @@
+﻿@page
+@inject IOptions<AppSettings> AppSettings
+@inject IOptions<Contacts> Contacts
+
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@using LeavePlanner.Utilities.Settings
+@model LoginModel
+@{
+    ViewData["Title"] = "Prijava";
+    ViewData["Category1"] = "Početna";
+    ViewData["Category1Href"] = "home/landPage";
+
+    ViewData["PageName"] = "login";
+}
+
+
+<div class="col-xl-8 col-md-6 col-sm-12 text-white hidden-sm-down">
+    <div class="col-10 text-white">
+        <h2 class="fs-xxl fw-700">
+            @AppSettings.Value.Application.Name
+            <small class="h4 fw-500 mt-3 mb-5">
+                @AppSettings.Value.Application.Name je web aplikacija <a target="_blank" class="text-white" href="#"> @AppSettings.Value.Author.Name </a> koja korisnicima omogućuje ...<br />
+            </small>
+        </h2>
+    </div>
+</div>
+<div class="col-xl-4 col-md-6 col-sm-10 m-sm-auto">
+    <div class="card p-4 rounded-plus bg-faded">
+        <h2 class="text-success fw-900"><span class="far fa-sign-in mr-2"></span>Prijava</h2>
+        <form id="js-login" method="post">
+            <div asp-validation-summary="All" class="alert alert-primary text-danger"></div>
+            <div class="form-group mb-0">
+                <label class="form-label" asp-for="Input.Email"></label>
+                <input type="text" asp-for="Input.Email" class="form-control" required="required" />
+            </div>
+            <div class="form-group mb-1">
+                <label class="form-label" asp-for="Input.Password"></label>
+                <div class="input-group flex-nowrap">
+                    <input type="password" asp-for="Input.Password" id="password" class="form-control" required="required" />
+                    <div class="input-group-append">
+                        <button type="button" class="input-group-text myInput">
+                            <i class="fs-xl far fa-lock-open-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row no-gutters">
+                <div class="col-lg-6 pr-lg-1 my-2">
+                    <a asp-controller="Test" asp-action="LandPage" class="btn btn-primary btn-block waves-effect waves-themed"><i class="far fa-home mr-2"></i>Početna</a>
+                </div>
+                <div class="col-lg-6 pl-lg-1 my-2">
+                    <button id="js-login-btn" type="submit" class="btn btn-success bg-success-gradient btn-block waves-effect waves-themed"><span class="far fa-sign-in mr-2"></span>Prijava</button>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" target="_blank" class="opacity-90"><span class="far fa-key mr-2"></span>Promjena lozinke</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-12 text-white hidden-md-up mt-4 mb-4">
+    <h2 class="p-2 fs-xxl fw-700 text-center">
+        @AppSettings.Value.Application.Name
+        <small class="h4 fw-500 mt-3 mb-5">
+            @AppSettings.Value.Application.Name je web aplikacija <a target="_blank" class="text-white" href="">@AppSettings.Value.Author.Name </a> koja korisnicima omogućuje...<br />
+        </small>
+        <div class="d-sm-flex flex-column align-items-center justify-content-center d-md-block">
+            <div class="text-white fs-nano opacity-80 mb-2">
+                Kontaktirajte nas
+            </div>
+            <div class="d-flex flex-row opacity-70 justify-content-center">
+                <a title="E-mail"
+                   href="mailto:@Contacts.Value.Email"
+                   class="mr-2 fs-xl text-white">
+                    <i class="far fa-envelope mr-2"></i>
+                </a>
+                <a class="mr-2 fs-xl text-white" href="#" data-placement="bottom" data-toggle="popover" data-trigger="focus" data-content="Tel: <a href='#'>@Contacts.Value.Phone</a> <br />  Fax: <a href='#'>@Contacts.Value.Phone2</a>" data-html="true" data-original-title="Title">
+                    <i class="far fa-phone mr-2"></i>
+                </a>
+                <a title="Web adresa" href="@Contacts.Value.WebSite" class="mr-2 fs-xl text-white">
+                    <i class="far fa-globe"></i>
+                </a>
+            </div>
+        </div>
+    </h2>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $('.myInput').on('click',
+            function () {
+                var pwd = document.getElementById("password");
+                if (pwd.type === "password") {
+                    pwd.type = "text";
+                } else {
+                    pwd.type = "password";
+                }
+
+                var icon = $(this).find('i'); // the clicked icon
+                if (icon.hasClass('fs-xl far fa-lock-open-alt')) {
+                    icon.removeClass('fs-xl far fa-lock-open-alt');
+                    icon.addClass('fs-xl far fa-lock-alt');
+                } else if (icon.hasClass('fs-xl far fa-lock-alt')) {
+                    icon.removeClass('fs-xl far fa-lock-alt');
+                    icon.addClass('fs-xl far fa-lock-open-alt');
+                }
+
+
+            });
+
+        $("#js-logsin-btn").click(function (event) {
+            // Fetch form to apply custom Bootstrap validation
+            var form = $("#js-login");
+
+            if (form[0].checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.addClass('was-validated');
+            // Perform ajax submit here...
+        });
+    </script>
+}

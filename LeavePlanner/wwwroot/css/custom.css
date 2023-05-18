@@ -1,0 +1,183 @@
+﻿/* Bootstrap Validation Summary Override */
+.validation-summary-valid {
+    display: none;
+}
+
+.validation-summary-errors ul {
+    margin-bottom: 0;
+    padding-left: 1rem;
+}
+
+.alert.validation-summary-errors {
+    margin-bottom: 1rem;
+}
+
+/* Reference classes, no implementation */
+.base,
+.needs-validation,
+.flex-start,
+.text-faded,
+.app-container-demo,
+.lang-js,
+.has-tooltip,
+.has-popover {
+}
+
+/* Keeps analyzers happy */
+.js-waves-off,
+.js-waves-on,
+.js-get-date,
+.js-collapse,
+.js-modal-settings,
+.js-filter-message,
+.js-buttons,
+.js-icon-class,
+.js-icon-copy,
+.js-bg-color,
+.js-bg-gradient,
+.js-bg-gradient-demo,
+.js-bg-target {
+}
+
+/* Small word wrap correction */
+section > ol > li {
+    word-break: break-all;
+}
+
+code {
+    border: 1px solid silver;
+    padding: 0.03rem 0.2rem !important;
+}
+
+pre.prettyprint {
+    border-radius: 0.2rem;
+    padding-left: 0.4rem !important;
+    padding-right: 0.4rem !important;
+}
+
+
+
+
+
+/* CUSTOM RULES */
+
+.form-group {
+    padding-left: 5px !important;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+
+/*Panel toolbar*/
+.panel-toolbar .btn-panel {
+    margin-left: 0.3rem;
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+/*Datatable search input*/
+input[type=search] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+    font-size: small;
+    margin-top: 1px;
+}
+
+/*Toastr messages*/
+#toast-container > .toast-info {
+    background-image: none;
+    background-color: #2196F3;
+    color: white;
+}
+
+#toast-container > .toast-error {
+    background-image: none;
+    background-color: #b22222;
+    color: white;
+}
+
+.toast-message {
+    margin-top: 5px;
+}
+
+.customValidationError {
+    margin-top: 0.3rem !important;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.form-label {
+    font-weight: bolder;
+    color: black;
+}
+
+.panel-tag {
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    border-left: 5px solid #4d948d;
+    background: #eef7fd;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.nav-link-text {
+    color: white;
+}
+
+.nav-footer {
+    position: relative;
+    padding: 10%;
+}
+
+.page-breadcrumb {
+    padding: 0;
+    background: transparent;
+    margin: 0 0 1.5rem;
+    position: relative;
+    text-shadow: black 0 0;
+}
+
+.subheader {
+    margin-bottom: calc(0.2rem + 0.625rem);
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+}
+
+th.dt-center, td.dt-center {
+    text-align: center;
+}
+
+.shortcut-menu {
+    position: fixed;
+    right: 0.3rem;
+    bottom: 10rem;
+    z-index: 531;
+}
+
+/*Enter custom CSS rules for your application here */
+
+
+
+.customDatableSearchBox {
+    border-radius: 4px;
+    padding: 5px;
+    width: 100%;
+    border: none;
+}

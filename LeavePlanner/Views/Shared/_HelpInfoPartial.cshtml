@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model LeavePlanner.Models.ViewModels.HelpViewModel
+
+@{
+    var requiredExists = Model.RequiredStepsMessages != null && Model.RequiredStepsMessages.Count > 0 ? "" : "d-none";
+    var conclusionExists = Model.ConclusionMessages != null && Model.ConclusionMessages.Count > 0 ? "" : "d-none";
+}
+
+<div class="modal fade show" id="helpModal" tabindex="-1" role="dialog" style="display: block;" aria-modal="true">
+    <div class="modal-dialog modal-transparent" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-white pb-0">
+                <h4 class="modal-title fw-500">
+                    Pomoć
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Zatvori">
+                    <span aria-hidden="true">
+                        <i class="far fa-times text-white"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="p-0 m-0">
+                <hr class="dividerHr"/>
+            </div>
+            <div class="modal-body text-white pt-0">
+                <div class="row">
+                    <div class="col-12">
+                        <fieldset disabled>
+                            @*TITLE*@
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h4 class="fw-900">@Model.Title</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            @*BASIC INFO MESSAGES*@
+                            <div class="row opacity-90">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h5 class="fw-500">@Model.BasicInfoMessagesTitle</h5>
+                                        @foreach (var msg in Model.BasicInfoMessages)
+                                        {
+                                            <ul class="mb-0">
+                                                <li>@msg</li>
+                                            </ul>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @*REQUIRED STEPS MESSAGE*@
+                            <div class="row opacity-90 @requiredExists">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h5 class="fw-500">@Model.RequiredStepsMessagesTitle</h5>
+                                        @if (Model.RequiredStepsMessages != null)
+                                        {
+                                            @foreach (var msg in Model.RequiredStepsMessages)
+                                            {
+                                                <ul class="mb-0">
+                                                    <li>@msg</li>
+                                                </ul>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.TabItems != null && Model.TabItems.Count > 0)
+                            {
+                                @foreach (var tabItem in Model.TabItems)
+                                {
+                                    <div class="row opacity-90">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <h5 class="fw-500">@tabItem.MessageTitle</h5>
+                                                @if (tabItem.Messages != null && tabItem.Messages.Count > 0)
+                                                {
+                                                    @foreach (var msg in tabItem.Messages)
+                                                    {
+                                                        <ul class="mb-0">
+                                                            <li>@msg</li>
+                                                        </ul>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            @*conclusion*@
+                            <div class="row mt-2 @conclusionExists">
+                                <div class="col-md-12">
+                                    <hr class="dividerHr w-100"/>
+                                    <div class="form-group">
+                                        <h5 class="fw-900">@Model.ConclusionMessagesTitle</h5>
+                                        @if (Model.ConclusionMessages != null)
+                                        {
+                                            @foreach (var msg in Model.ConclusionMessages)
+                                            {
+                                                <ul class="mb-0">
+                                                    <li>@msg</li>
+                                                </ul>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-white pt-0">
+                <partial name="_HelpModalButtons"/>
+            </div>
+        </div>
+    </div>
+</div>

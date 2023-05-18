@@ -1,0 +1,116 @@
+﻿@using LeavePlanner.Utilities.Navigation
+@using LeavePlanner.Utilities.Extensions
+@model LeavePlanner.Utilities.Navigation.SmartNavigation
+@{
+    var pageName = ViewData["PageName"]?.ToString();
+}
+<ul id="js-nav-menu" class="nav-menu">
+    @foreach (var group in Model.Lists)
+    {
+        @if (group.Items.Any())
+        {
+            var groups = group.Items.Select(x => System.IO.Path.GetFileNameWithoutExtension(x.Href)).Where(x => x != "javascript:void(0);").ToList();
+
+            group.Items.ForEach(item =>
+            {
+                var result = item.Items?.Select(x => System.IO.Path.GetFileNameWithoutExtension(x.Href)).Where(x => x != "javascript:void(0);").ToList();
+                if (result?.Any() == true)
+                {
+                    groups = groups.Concat(result).ToList();
+                }
+            });
+            <li class="@(groups.Contains(pageName) ? "active open" : "")">
+                <a href="#" title="@group.Title" data-filter-tags="@group.Tags">
+                    <i class="@group.Icon"></i>
+                    <span class="nav-link-text" data-i18n="@group.I18n">@group.Text.AsRaw()</span>
+                    @if (group.Span.HasValue())
+                    {
+                        <span class="@group.Span.Class">@group.Span.Text.AsRaw()</span>
+                    }
+                </a>
+                <ul>
+                    @{
+                        foreach (var item in group.Items)
+                        {
+                            var items = item.Items?.Select(x => System.IO.Path.GetFileNameWithoutExtension(x.Href)).Where(x => x != "javascript:void(0);").ToList();
+
+                            if (item.Disabled)
+                            {
+                                <text>
+                                    <li class="disabled">
+                                </text>
+                            }
+                            else
+                            {
+                                if (items?.Any() == true)
+                                {
+                                    <text>
+                                    <li class="@(items.Contains(pageName) ? "active open" : "")">
+                                    </text>
+                                }
+                                else
+                                {
+                                    <text>
+                                    <li class="@(pageName == System.IO.Path.GetFileNameWithoutExtension(item.Href) ? "active" : "")">
+                                    </text>
+                                }
+                            }
+                            <text>
+                                <a href="@item.Route" title="@item.Title" data-filter-tags="@item.Tags">
+                                    <span class="nav-link-text" data-i18n="@item.I18n">@item.Text.AsRaw()</span>
+                                    @if (item.Span.HasValue())
+                                    {
+                                        <span class="@item.Span.Class">@item.Span.Text.AsRaw()</span>
+                                    }
+                                </a>
+                            </text>
+                            if (item.Items?.Any() == true)
+                            {
+                                <text>
+                                    <ul>
+                                        @foreach (var subItem in item.Items)
+                                        {
+                                            if (subItem.Disabled)
+                                            {
+                                                <text>
+                                                <li class="disabled">
+                                                </text>
+                                            }
+                                            else
+                                            {
+                                                <text>
+                                                <li class="@(pageName == System.IO.Path.GetFileNameWithoutExtension(subItem.Href) ? "active" : "")">
+                                                </text>
+                                            }
+                                            <a href="@subItem.Route" title="@subItem.Title" data-filter-tags="@subItem.Tags">
+                                                <span class="nav-link-text" data-i18n="@subItem.I18n">@subItem.Text.AsRaw()</span>
+                                            </a>
+                                        @:</li>
+                                        }
+                                    </ul>
+                                </text>
+                            }
+                            @:</li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+        else
+        {
+            if (group.Type == ItemType.Category)
+            {
+                <li class="nav-title">@group.Title</li>
+            }
+            else
+            {
+                <li class="@(pageName == System.IO.Path.GetFileNameWithoutExtension(group.Href) ? "active" : "")">
+                    <a href="@group.Route" title="@group.Title" data-filter-tags="@group.Tags">
+                        <i class="@group.Icon"></i>
+                        <span class="nav-link-text" data-i18n="@group.I18n">@group.Title.AsRaw()</span>
+                    </a>
+                </li>
+            }
+        }
+    }
+</ul>

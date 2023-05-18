@@ -1,0 +1,49 @@
+﻿@inject IOptions<Contacts> AppContacts
+
+<div class="modal fade" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-bottom modal-transparent">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-2 col-md-4 col-sm-12 mt-1">
+                        <div class="p-3 bg-primary rounded overflow-hidden position-relative text-white">
+                            <div class="">
+                                <h3 class="d-block l-h-n m-0 fw-500">
+                                    <a title="E-mail kontakt" href="mailto:@AppContacts.Value.Email" class="text-white">
+                                        @AppContacts.Value.Email
+                                    </a>
+                                    <small class="m-0 l-h-n">E-mail</small>
+                                </h3>
+                            </div>
+                            <i class="fal fa-envelope position-absolute pos-right pos-bottom opacity-15 p-2" style="font-size:3rem"></i>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-4 col-sm-12 mt-1">
+                        <div class="p-3 bg-primary rounded overflow-hidden position-relative text-white">
+                            <div class="">
+                                <h3 class="d-block l-h-n m-0 fw-500">
+                                    @AppContacts.Value.Phone
+                                    <small class="m-0 l-h-n">Telefon</small>
+                                </h3>
+                            </div>
+                            <i class="fal fa-phone position-absolute pos-right pos-bottom opacity-15 p-2" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-4 col-sm-12 mt-1">
+                        <div class="p-3 bg-primary rounded overflow-hidden position-relative text-white ">
+                            <div class="">
+                                <h3 class="d-block l-h-n m-0 fw-500">
+                                    <a href="@AppContacts.Value.WebSite" target="_blank" class="text-white">
+                                        @AppContacts.Value.WebSite
+                                    </a>
+                                    <small class="m-0 l-h-n">Web adresa</small>
+                                </h3>
+                            </div>
+                            <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 p-2" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
