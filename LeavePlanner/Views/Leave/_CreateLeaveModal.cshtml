@@ -1,0 +1,81 @@
+﻿@model LeavePlanner.Models.ViewModels.Leave.CreateLeaveViewModel
+
+
+<div class="modal fade show" id="createLeaveModal" tabindex="-1" role="dialog" aria-modal="true" style="padding-right: 17px; display: block;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fw-900">
+                    New leave request
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fal fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            @if (Model.HasErrorOccured)
+            {
+                <div class="modal-body">
+                    <div class="panelTagCustomDanger">
+                        @Model.ErrorMessage
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="modal-body">
+                    <input type="hidden" asp-for="EmployeeId" />
+                    <input type="hidden" asp-for="RemainingLeaveDaysInYear" />
+                    <input type="hidden" asp-for="WorkingDaysUsed" />
+                    <input type="hidden" asp-for="DateFrom" />
+                    <input type="hidden" asp-for="DateTo" />
+                    <div class="card">
+                        <div class="w-100 bg-primary-100 rounded-top text-center pt-3">
+                            <h3 class="fw-900 mb-0">
+                                <span class="far fw-900 fa-user mr-2"></span>@Model.Name <br />
+                                <hr class="dividerHr w-50 text-center" />
+                                <small class="fw-700">
+                                    User name: @Model.UserName <br />
+                                    User role: @Model.UserRole
+                                </small>
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="panelTagCustom text-center">
+                                Date: <strong class="fw-900 text-danger">@Model.DateFrom - @Model.DateTo</strong>
+                            </div>
+                            <div class="panelTagCustom  text-center">
+                                Working days spent: <strong class="fw-900 text-danger">@Model.WorkingDaysUsed </strong><vl class="vl m-0 ml-2 mr-2"></vl> Current remaining days:<strong class="fw-900 text-danger"> @Model.RemainingLeaveDaysInYear</strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label asp-for="ReplacementEmployeeIds" class="form-label"></label>
+                                        @Html.DropDownListFor(x => x.ReplacementEmployeeIds, Model.ReplacementEmployeesSelectList, "...", new
+                                    {
+                                    @class = "select2 form-control js-ddlEmployees", @multiple="multiple"
+                                    })
+                                        <div class="customValidationError">
+                                            <span asp-validation-for="ReplacementEmployeeIds"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <partial name="_ModalButtonsTemplate" />
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        //allow validation framework to parse DOM
+        $.validator.unobtrusive.parse($("#formCreateLeave"));
+    });
+</script>

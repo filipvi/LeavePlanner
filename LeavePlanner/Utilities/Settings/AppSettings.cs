@@ -6,7 +6,7 @@ namespace LeavePlanner.Utilities.Settings
     {
         public Application Application { get; set; }
         public Author Author { get; set; }
-        public Company Company { get; set; }
+        public CompanyDataData CompanyData { get; set; }
         public GoogleRecaptcha GoogleRecaptcha { get; set; }
     }
 
@@ -25,7 +25,7 @@ namespace LeavePlanner.Utilities.Settings
         public string Email { get; set; }
     }
 
-    public class Company
+    public class CompanyDataData
     {
         public string Name { get; set; }
         public string Link { get; set; }

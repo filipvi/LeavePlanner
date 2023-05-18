@@ -1,0 +1,90 @@
+﻿@model LeavePlanner.Models.ViewModels.Employee.IndexEmployeeViewModel
+@{
+    ViewData["Title"] = "Employees";
+    ViewData["PageName"] = "employee_employees";
+    ViewData["Category1"] = "Employees";
+}
+
+@section Header
+    {
+    <link href="~/css/datatables/datatables.bundle.css" rel="stylesheet" />
+}
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="far fa-users"></i> Employees
+        <partial name="_ModalHelpButton" />
+    </h1>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-hdr bg-primary text-white text-white">
+                <h2>
+                    <i class="far fa-users mr-2 mb-1"></i> Users<span class="fw-400"></span>
+                </h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-offset="0,10" data-original-title="Proširi/Smanji">
+                        <i class="far fa-angle-double-up"></i>
+                    </button>
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Cijeli ekran">
+                        <i class="far fa-arrows"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-container collapse show">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-sm table-hover table-bordered table-striped dataTable w-100 display" id="dtEmployees">
+                                <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>E-mail</th>
+                                    <th>User role</th>
+                                    <th>Leave days per year</th>
+                                    <th>Remaining days</th>
+                                    <th class="no-sort">Details</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="js-helpModal d-none">
+    <partial name="_HelpInfoPartial" model="@Model.HelpModel" />
+</div>
+
+
+@section Scripts
+    {
+    <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/datatables/datatables.bundle.js"></script>
+    <script src="~/js/app/helper/datatableHelpers.js"></script>
+    <script src="~/js/app/services/employee/indexService.js"></script>
+    <script src="~/js/app/controllers/employee/indexController.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            // URL's initialization
+            var urlInfo = {};
+
+            urlInfo.getDataUrl = '@Url.Action("GetEmployees", "Employee")';
+            urlInfo.detailsUrl = '@Url.Action("Details", "Employee")';
+
+            indexController.init(urlInfo);
+
+        });
+
+    </script>
+}

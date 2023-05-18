@@ -1,8 +1,8 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject IOptions<AppSettings> AppSettings;
+@using LeavePlanner.Utilities.Extensions
+@using LeavePlanner.ViewComponents
 
 @{
-    var isTest = AppSettings.Value.Application.IsTest ? "" : "d-none";
+    var userRole = User.IsAuthenticated() ? User.GetLoggedInUserRole() : "";
 }
 
 <aside class="page-sidebar">
@@ -10,8 +10,8 @@
     <nav id="js-primary-nav" class="primary-nav" role="navigation">
         <partial name="_NavFilter"/>
         <partial name="_NavInfoCard"/>
-        <div class="@isTest m-0">
-            <h2 class="text-center text-danger fw-900">TEST</h2>
+        <div class="m-0">
+            <h2 class="text-center text-danger fw-900">@userRole</h2>
         </div>
         <vc:navigation/>
         <partial name="_NavFilterMsg"/>

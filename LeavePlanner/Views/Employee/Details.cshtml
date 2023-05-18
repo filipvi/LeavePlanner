@@ -1,0 +1,165 @@
+﻿@* KORISTI SE *@
+@using LeavePlanner.Models.Enums
+@model LeavePlanner.Models.ViewModels.Employee.DetailsEmployeeViewModel
+
+@{
+    ViewBag.Title = "Employee details";
+    ViewData["Category1"] = "Employees";
+    ViewData["Category1Href"] = "/employee/employees";
+    ViewData["PageName"] = "employee_details";
+}
+
+@section Header
+    {
+    <link href="~/css/datatables/datatables.bundle.css" rel="stylesheet" />
+}
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="far fa-user"></i> Employee details
+        <partial name="_ModalHelpButton" />
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-hdr bg-primary text-white text-white">
+                <h2>
+                    <i class="far fa-user mr-2"></i> Employee data<span class="fw-400"></span>
+                </h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-offset="0,10" data-original-title="Resize">
+                        <i class="far fa-angle-double-up"></i>
+                    </button>
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Full screen">
+                        <i class="far fa-arrows"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-container collapse show">
+                <div class="panel-content">
+                    <fieldset disabled>
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="form-label"></label>
+                                    <input type="text" asp-for="FirstName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="form-label"></label>
+                                    <input type="text" asp-for="LastName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="UserName" class="form-label"></label>
+                                    <input type="text" asp-for="UserName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label asp-for="UserRole" class="form-label"></label>
+                                    <input type="text" asp-for="UserRole" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label asp-for="LeaveDaysPerYear" class="form-label"></label>
+                                    <input type="text" asp-for="LeaveDaysPerYear" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label asp-for="RemainingLeaveDays" class="form-label"></label>
+                                    <input type="text" asp-for="RemainingLeaveDays" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <partial name="_DetailsEmployeeButtonsTemplate" />
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="panelTagCustomSuccess">
+                                Employee leaves
+                            </div>
+                            <table class="table table-sm table-hover table-bordered table-striped nowrap dataTable w-100 display" id="dtLeaves">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>Date from</th>
+                                        <th>Date to</th>
+                                        <th>Working days used</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var leave in Model.Leaves)
+                                    {
+                                        var badgeClass = string.Empty;
+                                        switch (leave.StatusId)
+                                        {
+                                            case (int)LeaveStatusEnums.Pending:
+                                                badgeClass = "secondary";
+                                                break;
+                                            case (int)LeaveStatusEnums.Approved:
+                                                badgeClass = "success";
+                                                break;
+                                            case (int)LeaveStatusEnums.Declined:
+                                                badgeClass = "danger";
+                                                break;
+                                        }
+
+                                        <tr>
+                                            <td>@leave.DateFrom</td>
+                                            <td>@leave.DateTo</td>
+                                            <td>@leave.WorkingDaysUsed</td>
+                                            <td>
+                                                <div class="badge badge-@badgeClass p-2"><span class="far fa-tag mr-2"></span> @leave.Status</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="js-helpModal d-none">
+    <partial name="_HelpInfoPartial" model="@Model.HelpModel" />
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/datatables/datatables.bundle.js"></script>
+    <script src="~/js/app/helper/datatableHelpers.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/app/services/employee/detailsService.js"></script>
+    <script src="~/js/app/controllers/employee/detailsController.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            // URL's initialization
+            var urlInfo = {};
+
+            urlInfo.indexUrl = '@Url.Action("Employees", "Employee")';
+            urlInfo.deleteUrl = '@Url.Action("Delete", "Employee")';
+
+            var employeeIdInfo = @Html.Raw(Json.Serialize(Model.Id));
+
+            detailsController.init(urlInfo, employeeIdInfo);
+        });
+
+    </script>
+
+
+}

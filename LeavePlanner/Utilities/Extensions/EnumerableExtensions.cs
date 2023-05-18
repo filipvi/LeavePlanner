@@ -22,6 +22,10 @@ namespace LeavePlanner.Utilities.Extensions
                 source = source.Skip(chunkSize);     // skip the returned chunk
             }
         }
-
+        public static IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
+        }
     }
 }

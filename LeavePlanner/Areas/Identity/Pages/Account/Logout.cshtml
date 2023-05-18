@@ -1,32 +1,43 @@
 ﻿@page
-@using System.Web
 @model LogoutModel
 @{
-    ViewData["PageName"] = "logout";
     ViewData["Title"] = "Log out";
-    var action = HttpUtility.UrlDecode(Request.Query["returnUrl"].FirstOrDefault()) ?? "/";
 }
 
-<div class="col-xl-6 ml-auto mr-auto">
-    <div class="p-4 text-center">
-        <h3>You have successfully logged out of the application.</h3>
-        <p>You are advised to close your browser for security purposes.</p>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-md-4 ml-auto text-left pr-1">
-            <a class="btn btn-block btn-primary mt-3 btn-link text-white ml-auto border-0" asp-area="Identity" asp-page="/account/login">
-                <i class="fal fa-shield-check fs-lg mr-1"></i> Secure Login
-            </a>
-        </div>
-        <div class="col-md-4 ml-auto text-right pl-1 pr-1">
-            <a class="btn btn-block btn-success bg-success-700 mt-3 btn-link text-white ml-auto border-0" asp-area="Identity" asp-page="/account/register">
-                <i class="fal fa-user fs-lg mr-1"></i> Register account
-            </a>
-        </div>
-        <div class="col-md-4 ml-auto text-right pl-1">
-            <a class="btn btn-block btn-danger bg-danger-700 mt-3 btn-link text-white ml-auto border-0" href="@action">
-                <i class="fal fa-arrow-alt-left fs-lg mr-1"></i> Return to Previous
-            </a>
+
+<div class="row">
+    <div class="col-xl-4 col-md-6 col-sm-12 m-auto p-4">
+        <div class="card p-4 rounded-plus bg-faded text-center">
+            <div class="col-12 mb-g fs-xxl text-success text-center">
+                <h2 class="fw-900">
+                    Logout successful
+                </h2>
+                <span class="far fa-check fa-2x text-success"></span>
+            </div>
+            <hr class="dividerHr w-75 mr-auto ml-auto"/>
+            <div class="row p-3">
+                <div class="col-12 mb-3">
+                    <a asp-controller="Home" asp-action="LandPage" class="btn btn-secondary btn-block btn-sm waves-effect waves-themed">
+                        <i class="fa fa-home mr-2"></i>
+                        Home page
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a asp-area="Identity" asp-page="/account/login" class="btn btn-success btn-block btn-sm waves-effect waves-themed">
+                        <i class="fa fa-sign-in-alt mr-2"></i>
+                        Login
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a asp-area="Identity" asp-page="/account/register" class="btn btn-danger btn-block btn-sm waves-effect waves-themed">
+                        <i class="fa fa-user-plus mr-2"></i>
+                        Register
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+

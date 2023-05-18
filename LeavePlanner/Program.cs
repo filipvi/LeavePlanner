@@ -1,8 +1,7 @@
-using LeavePlanner;
 using LeavePlanner.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace SimpleLab
+namespace LeavePlanner
 {
     public class Program
     {
@@ -16,10 +15,6 @@ namespace SimpleLab
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
-
-                    Seed.SeedData(context);
-
-                    // Apply any pending migrations. Will create database if it does not already exists.
                     context.Database.Migrate();
                 }
                 catch (Exception e)
@@ -34,9 +29,6 @@ namespace SimpleLab
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

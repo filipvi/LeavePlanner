@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
 using LeavePlanner.Core;
+using LeavePlanner.Core.Interfaces;
 using LeavePlanner.Core.Models.Identity;
 using LeavePlanner.Mapping;
 using LeavePlanner.Persistence;
-using LeavePlanner.Utilities.Email;
+using LeavePlanner.Persistence.Repositories;
 using LeavePlanner.Utilities.ExceptionHandler;
+using LeavePlanner.Utilities.Hubs;
 using LeavePlanner.Utilities.Logger;
 using LeavePlanner.Utilities.Settings;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 
 namespace LeavePlanner
 {
@@ -27,21 +26,32 @@ namespace LeavePlanner
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IEmailSender, EmailSender>();
+            #region Options
 
             services.AddOptions();
+
+
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<Contacts>(Configuration.GetSection("Contacts"));
+            services.Configure<HolidayApi>(Configuration.GetSection("HolidayApi"));
+
+            #endregion Options
+
+            #region Services
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IHolidayService, HolidayService>();
+            services.AddScoped<IDataSeeder, DataSeeder>();
 
-            #region Auto Mapper Configurations
+            #endregion Services
+
+            #region Auto Mapper
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 var profiles = new List<Profile>
                 {
-                    new TestProfile()
+                    new LeaveProfile(), new EmployeeProfile()
                 };
                 mc.AddProfiles(profiles);
             });
@@ -49,7 +59,9 @@ namespace LeavePlanner
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            #endregion Auto Mapper Configurations
+            #endregion Auto Mapper
+
+            #region Cookie policy
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -58,6 +70,8 @@ namespace LeavePlanner
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            #endregion Cookie policy
+
             #region DB Context
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -65,19 +79,10 @@ namespace LeavePlanner
 
             #endregion DB Context
 
-            services.AddRouting(options =>
-            {
-                options.LowercaseUrls = true;
-                options.LowercaseQueryStrings = false;
-            });
-
-            services.AddControllersWithViews();
-            services.AddRazorPages()
-                .AddRazorRuntimeCompilation();
-
             #region Identity and Identity Options
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+                    options.SignIn.RequireConfirmedAccount = false)
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -99,27 +104,48 @@ namespace LeavePlanner
 
             #endregion Identity and Identity Options
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Identity/Account/Login";
-                    options.LogoutPath = "/Identity/Account/Logout";
-                    options.AccessDeniedPath = "/Home/AccessDenied";
-                    options.Cookie.Name = "LoginCookie"; // TODO name
-                    options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                    // options.SlidingExpiration = true;
-                });
+            #region Routing
+
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = false;
+            });
+
+            #endregion Routing
+
+            #region MVC, Razor pages, Signal R
+
+            services.AddControllersWithViews();
+            services.AddRazorPages()
+                    .AddRazorRuntimeCompilation();
+            services.AddSignalR();
+
+            #endregion MVC, Razor pages, Signal R
+
+            #region App cookie
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            });
+
+            #endregion App cookie
 
             services.AddAuthorization();
             services.AddResponseCaching();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory,
-            UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IDataSeeder dataSeeder)
         {
+            #region Error
+
             if (env.IsDevelopment())
             {
                 app.UseGlobalExceptionHandler(errorPagePath: "/Home/GlobalError", respondWithJsonErrorDetails: true);
@@ -128,8 +154,9 @@ namespace LeavePlanner
             {
                 app.UseGlobalExceptionHandler(errorPagePath: "/Home/GlobalError", respondWithJsonErrorDetails: true);
                 app.UseHsts();
-
             }
+
+            #endregion Error
 
             #region Logger
 
@@ -140,29 +167,32 @@ namespace LeavePlanner
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            Directory.CreateDirectory("Documents");
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Documents")),
-                RequestPath = new PathString("/documents")
-            });
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 
+            #region Endpoints
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<CalendarHub>("/hubs/refetchEvents");
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Test}/{action=LandPage}/{id?}");
+                                             name: "default",
+                                             pattern: "{controller=Home}/{action=LandPage}/{id?}");
                 endpoints.MapRazorPages();
             });
 
+            #endregion Endpoints
+
             app.UseCookiePolicy();
             app.UseResponseCaching();
-            Seed.SeedUsers(userManager, roleManager);
 
+            #region Seed initial tables
+
+            dataSeeder.SeedData();
+
+            #endregion Seed initial tables
         }
     }
+
 }

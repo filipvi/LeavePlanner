@@ -1,0 +1,133 @@
+﻿@using LeavePlanner.Utilities.Security
+@model LeavePlanner.Models.ViewModels.Leave.IndexLeaveViewModel
+
+@{
+    ViewData["Title"] = "Leaves";
+    ViewData["PageName"] = "leave_index";
+    ViewData["Category1"] = "Leaves";
+}
+
+@section Header
+    {
+    <link href="~/css/datatables/datatables.bundle.css" rel="stylesheet" />
+    <link href="~/css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/css/miscellaneous/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" />
+}
+
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="far fa-house-leave"></i> Leaves
+        <partial name="_ModalHelpButton" />
+        <small class="ml-2 fw-700 text-muted">
+            Initially showing all employees leaves
+        </small>
+    </h1>
+</div>
+
+<div class="panel panel-show">
+    <div class="panel-hdr bg-primary text-white">
+        <h2>
+            <i class="far fa-list mr-2"></i> Data<span class="fw-400"></span>
+            @*<a asp-controller="Leave" asp-action="Create" asp-route-employeeId="@Model.EmployeeId" class="btn btn-warning btn-sm waves-effect waves-themed ml-2 d-none js-create"><span class="far fa-house-leave mr-2"></span>New leave request</a>*@
+        </h2>
+        <div class="panel-toolbar">
+            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Resize">
+                <i class="far fa-angle-double-up"></i>
+            </button>
+            <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Full screen">
+                <i class="far fa-arrows"></i>
+            </button>
+        </div>
+    </div>
+    <div class="panel-container show">
+        <div class="panel-content">
+            <div class="row">
+                @if (User.IsInRole(UserRoles.Employee))
+                {
+                    <div class="col-xl-4 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="EmployeeId" class="form-label"></label>
+                            @Html.DropDownListFor(x => x.EmployeeId, Model.EmployeeSelectList, "...", new
+                                                                                                      {
+                                                                                                          @class = "select2 form-control js-ddlEmployee", @disabled="disabled"
+                                                                                                      })
+                            <div class="customValidationError">
+                                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xl-4 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="EmployeeId" class="form-label"></label>
+                            @Html.DropDownListFor(x => x.EmployeeId, Model.EmployeeSelectList, "...", new
+                                                                                                      {
+                                                                                                          @class = "select2 form-control js-ddlEmployee"
+                                                                                                      })
+                            <div class="customValidationError">
+                                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <hr class="dividerHr"/>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div id="calendar" class="fc fc-ltr fc-bootstrap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="leaveModalPlaceholder"></div>
+
+<form asp-controller="Leave" asp-action="Create" method="post" id="formCreateLeave">
+    <div id="createLeavePlaceholder"></div>
+</form>
+
+<div class="js-helpModal d-none">
+    <partial name="_HelpInfoPartial" model="@Model.HelpModel" />
+</div>
+
+
+@section Scripts
+    {
+    <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="~/js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/js/datatables/datatables.bundle.js"></script>
+    <script src="~/js/app/helper/datatableHelpers.js"></script>
+    <script src="~/js/app/services/leave/indexService.js"></script>
+    <script src="~/js/app/controllers/leave/indexController.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            // URL's initialization
+            var urlInfo = {};
+
+            urlInfo.getInfoModalUrl = '@Url.Action("GetInfoModal", "Leave")';
+            urlInfo.getCreateModalUrl = '@Url.Action("GetCreateModal", "Leave")';
+            urlInfo.createUrl = '@Url.Action("Create", "Leave")';
+            urlInfo.getInfoModalUrl = '@Url.Action("GetInfoModal", "Leave")';
+            urlInfo.pendingUrl = '@Url.Action("Pending", "Leave")';
+            urlInfo.approveUrl = '@Url.Action("Approve", "Leave")';
+            urlInfo.declineUrl = '@Url.Action("Decline", "Leave")';
+            urlInfo.deleteUrl = '@Url.Action("Delete", "Leave")';
+            
+            var employeeIdInfo = @Html.Raw(Json.Serialize(Model.EmployeeId));
+
+            indexController.init(urlInfo, employeeIdInfo);
+        });
+
+    </script>
+}

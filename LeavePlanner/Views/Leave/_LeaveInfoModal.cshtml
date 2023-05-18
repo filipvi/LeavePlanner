@@ -1,0 +1,70 @@
+﻿@model LeavePlanner.Models.ViewModels.Leave.DetailsLeaveViewModel
+@{
+    var managementEnabled = @Model.ChangeStatusEnabled ? "" : "d-none";
+    var deleteEnabled = @Model.DeleteEnabled ? "" : "d-none";
+}
+
+<div class="modal fade show" id="leaveDetailsModal" tabindex="-1" role="dialog" aria-modal="true" style="padding-right: 17px; display: block;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fw-900">
+                    Leave request overview
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fal fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="w-100 bg-primary-100 rounded-top text-center pt-3 pb-2">
+                        <h3 class="fw-900">
+                            <span class="far fw-900 fa-user mr-2"></span>@Model.Employee
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="panelTagCustom">
+                            Date: @Model.DateFrom.ToString("d") - @Model.DateTo.ToString("d")
+                        </div>
+                        <div class="panelTagCustom">
+                            Working days spent: @Model.WorkingDays
+                        </div>
+                        <div class="panelTagCustom">
+                            Replacement employees:
+                            <ul class="mb-0">
+                                @foreach (var employee in Model.ReplacementEmployees)
+                                {
+                                    <li class="fw-700"> @employee</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    @if (Model.ChangeStatusEnabled || Model.DeleteEnabled)
+                    {
+                        <div class="card-footer">
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-danger btn-sm btn-block waves-effect waves-themed js-decline @managementEnabled"><span class="far fa-times mr-2"></span>Decline</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-block waves-effect waves-themed js-pending @managementEnabled"><span class="far fa-times mr-2"></span>Pending</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-success btn-sm btn-block waves-effect waves-themed js-approve @managementEnabled"><span class="far fa-check mr-2"></span>Approve</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-danger btn-sm btn-block text-center waves-effect waves-themed m-auto js-delete @deleteEnabled"><span class="far fa-trash-alt mr-2"></span>Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

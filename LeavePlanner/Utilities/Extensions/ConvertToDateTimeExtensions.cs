@@ -10,7 +10,7 @@ namespace LeavePlanner.Utilities.Extensions
         /// <param name="data"> pass data in string format</param>
         public static DateTime StringToDateTime(this string data)
         {
-            string[] formats = new[] { "dd.MM.yyyy", "dd.MM.yyyy." };
+            string[] formats = new[] { "dd.MM.yyyy", "dd.MM.yyyy.", "yyyy-MM-dd" };
 
             return DateTime.ParseExact(data, formats, CultureInfo.InvariantCulture);
         }

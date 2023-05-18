@@ -1,0 +1,97 @@
+﻿@* KORISTI SE *@
+@model LeavePlanner.Models.ViewModels.Employee.EditEmployeeViewModel
+
+@{
+    ViewBag.Title = "Edit employee";
+    ViewData["Category1"] = "Employee details";
+    ViewData["Category1Href"] = "/employee/details/" + @Model.Id;
+    ViewData["PageName"] = "employee_edit";
+}
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="far fa-user"></i> Edit employee
+        <partial name="_ModalHelpButton" />
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-hdr bg-primary text-white text-white">
+                <h2>
+                    <i class="far fa-user mr-2"></i> Employee data<span class="fw-400"></span>
+                </h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-offset="0,10" data-original-title="Resize">
+                        <i class="far fa-angle-double-up"></i>
+                    </button>
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Full screen">
+                        <i class="far fa-arrows"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-container collapse show">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6 col-sm-10">
+                            <div class="p-3 bg-warning-400 rounded overflow-hidden position-relative text-white mb-g">
+                                <div class="">
+                                    <h3 class="d-block l-h-n m-0 fw-500">
+                                        @Model.Name
+                                        <small class="m-0 l-h-n">@Model.UserName</small>
+                                    </h3>
+                                </div>
+                                <i class="fal fa-gem position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4" style="font-size: 6rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <form asp-controller="Employee" asp-action="Edit" method="post">
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="LeaveDaysPerYear" class="form-label"></label>
+                                    <input type="text" asp-for="LeaveDaysPerYear" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="UserRoleId" class="form-label"></label>
+                                    @Html.DropDownListFor(x => x.UserRoleId, Model.UserRoleSelectList, "...", new {@class = "select2 form-control js-ddlRole" })
+                                    <div class="customValidationError">
+                                        <span asp-validation-for="UserRoleId"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <partial name="_EditEmployeeButtonsTemplate" />
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="js-helpModal d-none">
+    <partial name="_HelpInfoPartial" model="@Model.HelpModel" />
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/datatables/datatables.bundle.js"></script>
+    <script src="~/js/app/helper/datatableHelpers.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
+
+    </script>
+
+
+}

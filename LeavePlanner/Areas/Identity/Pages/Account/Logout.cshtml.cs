@@ -1,12 +1,14 @@
-﻿using LeavePlanner.Core.Models.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+#nullable disable
+
+using LeavePlanner.Core.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LeavePlanner.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -16,10 +18,6 @@ namespace LeavePlanner.Areas.Identity.Pages.Account
         {
             _signInManager = signInManager;
             _logger = logger;
-        }
-
-        public void OnGet()
-        {
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
@@ -32,6 +30,8 @@ namespace LeavePlanner.Areas.Identity.Pages.Account
             }
             else
             {
+                // This needs to be a redirect so that the browser performs a new
+                // request and the identity for the user gets updated.
                 return RedirectToPage();
             }
         }

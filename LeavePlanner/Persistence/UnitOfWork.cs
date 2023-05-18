@@ -1,6 +1,8 @@
 ﻿using LeavePlanner.Core;
 using LeavePlanner.Core.Interfaces;
 using LeavePlanner.Persistence.Repositories;
+using LeavePlanner.Utilities.Settings;
+using Microsoft.Extensions.Options;
 using Z.EntityFramework.Plus;
 
 namespace LeavePlanner.Persistence
@@ -8,15 +10,21 @@ namespace LeavePlanner.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
+        private readonly IOptions<HolidayApi> _holidaysApi;
 
-        public ITestRepository TestRepository { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, IOptions<HolidayApi> holidaysApi)
         {
             _context = context;
+            _holidaysApi = holidaysApi;
 
-            TestRepository = new TestRepository(context);
+            EmployeeRepository = new EmployeeRepository(context);
+            LeaveRepository = new LeaveRepository(context);
+
         }
+
+        public IEmployeeRepository EmployeeRepository { get; }
+        public ILeaveRepository LeaveRepository { get; }
 
         public async Task CompleteAsync()
         {

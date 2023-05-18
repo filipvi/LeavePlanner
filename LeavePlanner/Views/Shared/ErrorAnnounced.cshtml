@@ -1,24 +1,25 @@
-﻿@{
+﻿@inject IOptions<AppSettings> AppSettings;
+@inject IOptions<Contacts> Contacts;
+@{
     ViewData["Title"] = "Greška";
     Layout = "_LayoutError";
 }
 
 <div class="h-alt-f d-flex flex-column align-items-center justify-content-center text-center small">
     <h3 class="page-error text-white-50">
-        DOŠLO JE DO GREŠKE
+        ERROR OCCURED
     </h3>
     <h3 class="fw-700 mb-5 text-white-50">
-        Imamo tehničkih poteškoća u radu aplikacije.
+        We have technial problems.
     </h3>
     <h4 class="text-white-50">
-        Molimo Vas prijavite grešku na linku ispod. <br/>
-        Nakon prijave greške, potruditi ćemo se ispraviti je što prije.
+        Please describe error on link below<br/>
+        After submiting error we will do our best to solve it ASAP.
         <br />
     </h4>
     <div class="row mt-5">
-        @*TODO implement mail and homepage logic*@
-        <a asp-controller="Test" asp-action="Index" class="btn btn-info bg-info-200 opacity-80 waves-effect waves-themed mr-5"><i class="fas fa-home mr-2"></i>Početna stranica</a>
-        <a title="aplikacije@hdit.hr" href="mailto:aplikacije@hdit.hr?subject=Greška SimpleLab" class="btn btn-warning bg-warning-700 opacity-80 waves-effect waves-themed"><i class="fas fa-envelope mr-2"></i>Kontaktiraj podršku</a>
+        <a asp-controller="Home" asp-action="LandPage" class="btn btn-info bg-info-200 opacity-80 waves-effect waves-themed mr-5"><i class="fas fa-home mr-2"></i>Home</a>
+        <a title="@AppSettings.Value.Application.HelpdeskContact" href="mailto:@AppSettings.Value.Application.HelpdeskContact" class="btn btn-warning bg-warning-700 opacity-80 waves-effect waves-themed"><i class="fas fa-envelope mr-2"></i>Support</a>
     </div>
     
 </div>
