@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-<header class="page-header" role="banner">
+﻿<header class="page-header" role="banner">
     <partial name="_Logo"/>
     <!-- DOC: mobile button appears during mobile width -->
     <div class="hidden-lg-up">
@@ -8,25 +7,26 @@
         </a>
     </div>
     <div class="hidden-md-down dropdown-icon-menu position-relative">
-        <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-minify" title="Smanji navigacijsku traku">
+        <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-minify" title="Resize nav bar">
             <i class="ni ni-minify-nav"></i>
         </a>
     </div>
     <div class="search">
-        <form class="app-forms hidden-xs-down" role="search" method="post" href="#" autocomplete="off">
-            <input type="text" id="search-field" class="form-control search-box" tabindex="1" placeholder="Search" name="#">
+        <form class="app-forms hidden-xs-down" role="search" method="post" asp-controller="Employee" asp-action="Search" autocomplete="off">
+            <input type="text" id="search-field" class="form-control search-box" tabindex="1" placeholder="Search for employees" name="searchTerm">
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
             <a href="#" onclick="return false;" class="btn-danger btn-search-close js-waves-off d-none" data-action="toggle" data-class="mobile-search-on">
                 <i class="fal fa-times"></i>
             </a>
         </form>
     </div>
     <div class="ml-auto d-flex">
-        <a href="#" title="Postavke pristupačnosti" data-toggle="modal" data-target=".js-modal-settings" class="header-icon d-flex align-items-center justify-content-center ml-2">
+        <a href="#" title="Accessibility" data-toggle="modal" data-target=".js-modal-settings" class="header-icon d-flex align-items-center justify-content-center ml-2">
             <span class="fas fa-universal-access mr-2"></span>
         </a>
         <!-- app user menu -->
         <div>
-            <a href="#" data-toggle="dropdown" title="Postavke" class="header-icon d-flex align-items-center justify-content-center ml-2">
+            <a href="#" data-toggle="dropdown" title="Settings" class="header-icon d-flex align-items-center justify-content-center ml-2">
                 <span class="fas fa-user"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-animated dropdown-lg">

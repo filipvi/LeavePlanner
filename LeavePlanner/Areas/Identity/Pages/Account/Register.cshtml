@@ -1,123 +1,118 @@
 ﻿@page
+@using Microsoft.Extensions.Options
+@using LeavePlanner.Utilities.Settings
 @model RegisterModel
+@inject IOptions<AppSettings> AppSettings
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-
-<div class="col-xl-6 ml-auto mr-auto">
-    <div class="card p-4 rounded-plus bg-faded">
-        @*<div class="alert alert-primary text-dark" role="alert">
-                <strong>Heads Up!</strong> Due to server maintenance from 9:30GTA to 12GTA, the verification emails could be delayed by up to 10 minutes.
-            </div>*@
-        <form id="js-login" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="All" class="alert alert-primary text-danger"></div>
-            <div class="form-group row">
-                <label class="col-xl-12 form-label">Vaše ime i prezime</label>
-                <div class="col-6 pr-1">
-                    <input type="text" asp-for="Input.FirstName" class="form-control" placeholder="Ime" required="required" />
-                    <span class="invalid-feedback" asp-validation-for="Input.FirstName">Obavezno polje</span>
-                </div>
-                <div class="col-6 pl-1">
-                    <input type="text" asp-for="Input.LastName" class="form-control" placeholder="Prezime" required="required" />
-                    <span class="invalid-feedback" asp-validation-for="Input.LastName">Obavezno polje</span>
-                </div>
+<div class="row">
+    <div class="col-12">
+        <div class="col-xl-12 col-md-10 col-sm-12 m-auto text-center text-muted hidden-sm-down">
+            <div class="col-12">
+                <h2 class="fs-xxl fw-700">
+                    @AppSettings.Value.Application.Name
+                    <small class="h4 fw-500 mt-3 mb-5">
+                        @AppSettings.Value.Application.Name is web application for managing domain data and vacation requests inside your Company<br />
+                    </small>
+                </h2>
             </div>
-            <div class="form-group">
-                <label class="form-label" asp-for="Input.Email">Email adresa <span class="text-muted small">je potrebna za prijavu i oporavak korisničkog računa</span></label>
-                <input type="email" asp-for="Input.Email" class="form-control" placeholder="Email adresa" required="required" />
-                <span class="invalid-feedback" asp-validation-for="Input.Email">Obavezno polje</span>
-                <div class="help-block">Email adresa će biti vaše korisničko ime</div>
-            </div>
-            <div class="form-group">
-                <label class="form-label" asp-for="Input.Password">Lozinka</label>
-                <input type="password" asp-for="Input.Password" class="form-control" placeholder="Lozinka (minimalno 6 znakova)" required="required" />
-                <span class="invalid-feedback" asp-validation-for="Input.Password">Obavezno polje</span>
-                <div class="help-block">Vaša lozinka mora biti duga 6-20 znakova, mora sadržavati slova i brojeve, te ne smije sadržavati razmake i specijalne znakove.</div>
-            </div>
-            <div class="form-group">
-                <label class="form-label" asp-for="Input.ConfirmPassword">Ponovljena lozinka</label>
-                <input type="password" asp-for="Input.ConfirmPassword" class="form-control" placeholder="Lozinka (minimalno 6 znakova)" required="required" />
-                <span class="invalid-feedback" asp-validation-for="Input.ConfirmPassword">Obavezno polje</span>
-            </div>
-            @*<div class="form-group demo">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" asp-for="Input.AgreeToTerms" />
-                        <label class="custom-control-label" asp-for="Input.AgreeToTerms">Slažem se sa uvjetima i odredbama</label>
-                        <span class="invalid-feedback" asp-validation-for="Input.AgreeToTerms">Potrebno potvrditi prije nastavka</span>
+        </div>
+        <div class="col-xl-4 col-md-10 col-sm-10 m-sm-auto">
+            <div class="card p-4 rounded-plus bg-faded">
+                <h2 class="text-success fw-900"><span class="far fa-sign-in mr-2"></span>Register</h2>
+                <form id="js-register" method="post">
+                    <div asp-validation-summary="All" class="alert alert-primary text-danger"></div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" asp-for="Input.Email"></label>
+                        <input type="text" asp-for="Input.Email" class="form-control" required="required" />
                     </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" asp-for="Input.SignUp" />
-                        <label class="custom-control-label" asp-for="Input.SignUp">Prijavite se za Newsletter</label>
+                    <div class="form-group mb-0">
+                        <label class="form-label" asp-for="Input.FirstName"></label>
+                        <input type="text" asp-for="Input.FirstName" class="form-control" required="required" />
                     </div>
-                </div>*@
-            <div class="row no-gutters justify-content-center">
-                <div class="col-12 fw-700 text-right">
-                    <button id="js-login-btn" type="submit" class="btn btn-danger waves-effect waves-themed "><span class="fal fa-user mr-2"></span>Registracija</button>
-                </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" asp-for="Input.LastName"></label>
+                        <input type="text" asp-for="Input.LastName" class="form-control" required="required" />
+                    </div>
+                    <div class="form-group mb-1">
+                        <label class="form-label" asp-for="Input.Password"></label>
+                        <div class="input-group flex-nowrap">
+                            <input type="password" asp-for="Input.Password" id="password" class="form-control" required="required" />
+                            <div class="input-group-append">
+                                <button type="button" tabindex="-1" class="input-group-text myInputPwd">
+                                    <i class="fs-xl far fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label class="form-label" asp-for="Input.ConfirmPassword"></label>
+                        <div class="input-group flex-nowrap">
+                            <input type="password" asp-for="Input.ConfirmPassword" id="confirmPassword" class="form-control" required="required" />
+                            <div class="input-group-append">
+                                <button type="button" tabindex="-1" class="input-group-text myInputConfirmPwd">
+                                    <i class="fs-xl far fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 pr-lg-1 my-2">
+                            <a asp-controller="Home" asp-action="LandPage" class="btn btn-primary btn-block waves-effect waves-themed"><i class="far fa-home mr-2"></i>Home page</a>
+                        </div>
+                        <div class="col-lg-6 pl-lg-1 my-2">
+                            <button id="js-register-btn" type="submit" class="btn btn-success bg-success-gradient btn-block waves-effect waves-themed"><span class="far fa-sign-in mr-2"></span>Register</button>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a asp-area="Identity" asp-page="/account/login" class="opacity-90"><span class="far fa-sign-in mr-2"></span>Already have account, login</a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-@*<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>*@
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $('.myInputPwd').on('click',
+            function () {
+                var pwd = document.getElementById("password");
+                if (pwd.type === "password") {
+                    pwd.type = "text";
+                } else {
+                    pwd.type = "password";
+                }
+            });
+
+        $('.myInputConfirmPwd').on('click',
+            function () {
+                var pwd = document.getElementById("confirmPassword");
+                if (pwd.type === "password") {
+                    pwd.type = "text";
+                } else {
+                    pwd.type = "password";
+                }
+            });
+
+        $("#js-register-btn").click(function (event) {
+            // Fetch form to apply custom Bootstrap validation
+            var form = $("#js-register");
+
+            if (form[0].checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.addClass('was-validated');
+            // Perform ajax submit here...
+        });
+    </script>
 }

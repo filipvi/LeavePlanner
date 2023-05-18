@@ -1,11 +1,9 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-
 @inject IOptions<AppSettings> AppSettings
 
 @if (ViewBag.Category1?.Length > 0)
 {
     <ol class="breadcrumb page-breadcrumb">
-        <li class="breadcrumb-item"><a title="Početna stranica" asp-controller="Test" asp-action="Index"><i class="fas fa-home mr-2"></i>@AppSettings.Value.Application.Name</a></li>
+        <li class="breadcrumb-item"><a title="Home page" asp-controller="Home" asp-action="LandPage"><i class="fas fa-home mr-2"></i>@AppSettings.Value.Application.Name</a></li>
         @if (ViewBag.Category1?.Length > 0)
         {
             <li class="breadcrumb-item"><a href="@ViewBag.Category1Href">@ViewBag.Category1</a></li>

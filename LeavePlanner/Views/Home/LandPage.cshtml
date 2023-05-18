@@ -1,0 +1,56 @@
+﻿@using LeavePlanner.Utilities.Extensions
+@inject IOptions<AppSettings> AppSettings
+
+@{
+    ViewData["Title"] = "Home";
+    ViewData["PageName"] = "home_landPage";
+    ViewData["Category1"] = "Home";
+}
+
+<div class="container py-4 py-lg-5 my-lg-5 px-2 px-sm-0">
+    <div class="row">
+        <div class="col-xl-6 ml-auto mr-auto">
+            <div class="card p-4 rounded-plus bg-faded text-center">
+                <h1 class="fw-900 fs-xxl text-uppercase text-success p-2">@AppSettings.Value.Application.Name</h1>
+                <h5 class="fw-900">
+                    Welcome to @AppSettings.Value.Application.Name, web application for managing employees leave requests
+                </h5>
+                @if (!User.IsAuthenticated())
+                {
+                    <hr class="dividerHr w-75 mx-auto my-3" />
+                    <h5 class="fw-300 col-xl-10 m-auto opacity-80">
+                        Log in or create a new account to be able to use all the functionality of the application
+                    </h5>
+                    <div class="row no-gutters mt-3">
+                        <div class="col-lg-6 pr-lg-1 my-2">
+                            <a href="identity/account/login"
+                               class="btn btn-success btn-sm btn-block waves-effect waves-themed">
+                                <i class="fa fa-user-check mr-2"></i>
+                                Login with existing account
+                            </a>
+                        </div>
+                        <div class="col-lg-6 pl-lg-1 my-2">
+                            <a href="identity/account/register"
+                               class="btn btn-danger btn-sm btn-block waves-effect waves-themed">
+                                <i class="fa fa-user-plus mr-2"></i>
+                                Create new account
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <hr class="dividerHr w-75 mx-auto my-3" />
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="panelTagCustom">
+                                Logged in as: <strong class="fw-900 text-info">@User.GetLoggedInUserName()</strong> <br />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

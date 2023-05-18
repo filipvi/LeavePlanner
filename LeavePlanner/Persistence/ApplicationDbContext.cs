@@ -1,7 +1,9 @@
-﻿using LeavePlanner.Core.EntityTypeConfigurations;
+﻿using LeavePlanner.Core.EntityTypeConfigurations.BussinessConfigurations;
+using LeavePlanner.Core.EntityTypeConfigurations.CodexConfigurations;
 using LeavePlanner.Core.EntityTypeConfigurations.UserTypeConfigurations;
+using LeavePlanner.Core.Models.Bussiness;
+using LeavePlanner.Core.Models.Codex;
 using LeavePlanner.Core.Models.Identity;
-using LeavePlanner.Core.Models.Test;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +26,9 @@ namespace LeavePlanner.Persistence
         public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
 
         // Business models
-        public DbSet<TestTable> TestTables { get; set; }
+        public DbSet<LeaveStatus> LeaveStatuses { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
+        public DbSet<LeaveReplacementUser> LeaveReplacementUsers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -44,7 +48,9 @@ namespace LeavePlanner.Persistence
 
             // Identity models configuration
             builder.ApplyConfiguration(new ApplicationUserRoleConfiguration());
-            builder.ApplyConfiguration(new TestTableConfiguration());
+            builder.ApplyConfiguration(new LeaveStatusConfiguration());
+            builder.ApplyConfiguration(new LeaveConfiguration());
+            builder.ApplyConfiguration(new LeaveReplacementUserConfiguration());
         }
     }
 }

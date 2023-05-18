@@ -1,6 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-
-@if (User.Identity.IsAuthenticated)
+﻿@using LeavePlanner.Utilities.Extensions
+@if (User.IsAuthenticated())
 {
     <div class="bg-trans-gradient d-flex flex-row py-3 rounded-top">
         <div class="d-flex flex-row text-white">
@@ -8,8 +7,8 @@
                 <span class="fas fa-user-circle fa-2x"></span>
             </span>
             <div class="info-card-text small ml-2">
-                <span class="opacity-80 mb-2" style="text-decoration: underline;">Korisničko ime:</span>
-                <span class="fw-700">@(User.Identity.Name)</span>
+                <span class="opacity-80 mb-2">Username</span>
+                <span class="fw-700">@(User.GetLoggedInUserName())</span>
             </div>
         </div>
     </div>
@@ -22,8 +21,8 @@ else
                 <span class="fas fa-user-cog fa-2x mr-2"></span>
             </span>
             <div class="info-card-text small">
-                <span class="font-weight-bold">Niste prijavljeni</span>
-                <span class="opacity-80" style="font-size: 12px;">Prijavite se za više mogućnosti</span>
+                <span class="font-weight-bold">User not logged in</span>
+                <span class="opacity-80" style="font-size: 12px;">Login for more</span>
             </div>
         </div>
     </div>
@@ -31,29 +30,25 @@ else
 
 <div class="dropdown-divider m-0"></div>
 
-@*<a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
-    <span class="fas fa-cogs mr-2"></span><span data-i18n="drpdwn.settings">Postavke korisničkog sučelja</span>
-</a>*@
 
-@*<div class="dropdown-divider m-0"></div>*@
-
-@if (User.Identity.IsAuthenticated)
+@if (User.IsAuthenticated())
 {
     <a href="~/manual/manual.pdf" download="" class="dropdown-item">
-        <span class="fas fa-file-pdf mr-2"></span><span data-i18n="drpdwn.settings">Upute za korištenje</span>
+        <span class="fas fa-file-pdf mr-2"></span><span data-i18n="drpdwn.settings">Manual </span>
     </a>
     <div class="dropdown-divider m-0"></div>
-    <a class="dropdown-item pt-3 pb-3 text-danger" asp-area="Identity" asp-page="/Account/Logout">
-        <span class="fas fa-sign-out mr-2"></span><span data-i18n="drpdwn.page-logout">Odjava iz aplikacije</span>
-    </a>
+    <form method="post" asp-area="Identity" asp-page="/Account/Logout">
+        <button type="submit" name="Logout" class="dropdown-item text-danger"><span class="fas fa-sign-out mr-2"></span>Logout</button>
+    </form>
+
 }
 else
 {
     <a href="/identity/account/login" class="dropdown-item text-success">
-        <span class="fas fa-user-check mr-2"></span><span data-i18n="drpdwn.reset_layout">Prijava</span>
+        <span class="fas fa-user-check mr-2"></span><span data-i18n="drpdwn.reset_layout">Login</span>
     </a>
     <a href="/identity/account/register" class="dropdown-item text-success">
-        <span class="fas fa-user-plus mr-2"></span><span data-i18n="drpdwn.reset_layout">Registracija</span>
+        <span class="fas fa-user-plus mr-2"></span><span data-i18n="drpdwn.reset_layout">Register</span>
     </a>
 }
 

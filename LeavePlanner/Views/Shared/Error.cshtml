@@ -1,27 +1,19 @@
 ﻿@model LeavePlanner.Models.ErrorViewModel
+@inject IOptions<AppSettings> AppSettings
 @{
-    ViewData["Title"] = "Greška";
+    ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger fw-700">Pogreška</h1>
-<h4 class="text-danger">Dogodila se pogreška prilikom obrade vašeg zahtjeva</h4>
-
-@*@if (Model?.ShowRequestId == true)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model?.RequestId</code>
-    </p>
-}*@
-
+<h1 class="text-danger fw-700">Error occured</h1>
+<h4 class="text-danger">There was error in your request</h4>
 
 <div class="ml-2">
     <hr class="bodyHr" />
-    <h5 class="mt-1 text-black-50"> <i class="fal fa-user mr-3"></i><strong class="mr-3 text-dark">Korisnik:</strong> @Model.UserName</h5>
-    <h5 class="mt-1 text-black-50"> <i class="fal fa-server mr-3"></i><strong class="mr-3 text-dark">Zatraženi URL:</strong> @Model.Url</h5>
+    <h5 class="mt-1 text-black-50"> <i class="fal fa-user mr-3"></i><strong class="mr-3 text-dark">User:</strong> @Model.UserName</h5>
+    <h5 class="mt-1 text-black-50"> <i class="fal fa-server mr-3"></i><strong class="mr-3 text-dark">Requested URL:</strong> @Model.Url</h5>
     <h5 class="mt-1 text-black-50"> <i class="fal fa-envelope mr-3"></i><strong class="mr-3 text-dark">Info:</strong> @Model.Message</h5>
     <br />
     <br />
-    @*TODO implement mail and homepage logic*@
-    <a asp-controller="Test" asp-action="Index" class="btn btn-primary waves-effect waves-themed mr-2"><i class="fas fa-home mr-2"></i>Početna stranica</a>
-    <a title="aplikacije@hdit.hr" href="mailto:aplikacije@hdit.hr?subject=Greška SimpleLab" class="btn btn-default waves-effect waves-themed"><i class="fas fa-envelope mr-2"></i>Kontaktiraj podršku</a>
+    <a asp-controller="Home" asp-action="LandPage" class="btn btn-primary waves-effect waves-themed mr-2"><i class="fas fa-home mr-2"></i>Home</a>
+    <a title="@AppSettings.Value.Application.HelpdeskContact" href="mailto:@AppSettings.Value.Application.HelpdeskContact" class="btn btn-default waves-effect waves-themed"><i class="fas fa-envelope mr-2"></i>Support</a>
 </div>

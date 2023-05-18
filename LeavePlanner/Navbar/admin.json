@@ -1,0 +1,17 @@
+{
+  "version": "4",
+  "lists": [
+    {
+      "title": "Employees",
+      "icon": "fal fa-users text-white",
+      "href": "employee_employees.html",
+      "roles": []
+    },
+    {
+      "title": "Leaves",
+      "icon": "fal fa-house-leave text-white",
+      "href": "leave_leaves.html",
+      "roles": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "version": "4",
+  "lists": [
+    {
+      "title": "Leaves",
+      "icon": "fal fa-house-leave text-white",
+      "href": "leave_leaves.html",
+      "roles": []
+    }
+  ]
+}

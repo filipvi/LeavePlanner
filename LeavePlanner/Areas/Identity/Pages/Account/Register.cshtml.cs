@@ -1,74 +1,92 @@
-﻿using LeavePlanner.Core.Models.Identity;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+#nullable disable
+
+using LeavePlanner.Core.Models.Identity;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace LeavePlanner.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
         }
 
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
         public string ReturnUrl { get; set; }
 
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
         public class InputModel
         {
-            [Display(Name = "Ime")]
-            [Required(ErrorMessage = "Ime - obavezno")]
+            [Display(Name = "First name")]
+            [Required(ErrorMessage = "First name - required")]
             public string FirstName { get; set; }
 
-            [Display(Name = "Prezime")]
-            [Required(ErrorMessage = "Prezime - obavezno")]
+            [Display(Name = "Last name")]
+            [Required(ErrorMessage = "Last name - required")]
             public string LastName { get; set; }
 
-            [Required(ErrorMessage = "Email - obavezno")]
-            [EmailAddress(ErrorMessage = "Email - krivi format")]
+            [Required(ErrorMessage = "Email - required")]
+            [EmailAddress(ErrorMessage = "Email - wront format")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Lozinka - obavezno")]
-            [StringLength(100, ErrorMessage = "{0} mora biti duga između {2} i {1} znaka.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Password - required")]
             [DataType(DataType.Password)]
-            [Display(Name = "Lozinka")]
+            [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Ponovljena lozinka")]
-            [Compare("Password", ErrorMessage = "Lozinke se ne podudaraju.")]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "Passwords are not the same")]
             public string ConfirmPassword { get; set; }
 
-            //[Required]
-            [Display(Name = "Slažem se sa uvjetima i odredbama")]
+            [Display(Name = "Agreed to terms")]
             public bool AgreeToTerms { get; set; }
 
-            [Display(Name = "Prijavite se za Newsletter")]
+            [Display(Name = "Newsletter?")]
             public bool SignUp { get; set; }
         }
+
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -78,7 +96,8 @@ namespace LeavePlanner.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser()
@@ -92,18 +111,9 @@ namespace LeavePlanner.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    #region Email confirm
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Page("/Account/ConfirmEmail", null, new { userId = user.Id, code }, Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(Input.Email, "Potvrda email adresa",
-                    //    $"Molimo Vas da potvrdite Vašu email adresu <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikom na ovaj link</a>.");
-                    //return RedirectToPage("./CheckEmail");
-                    #endregion
-
+                    user.EmailConfirmed = true;
                     await _signInManager.SignInAsync(user, false);
                     return LocalRedirect(returnUrl);
-
                 }
 
                 foreach (var error in result.Errors)
@@ -114,6 +124,29 @@ namespace LeavePlanner.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private ApplicationUser CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<ApplicationUser>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
+        }
+
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

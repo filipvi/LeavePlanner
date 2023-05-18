@@ -5,7 +5,8 @@ namespace LeavePlanner.Core
 {
     public interface IUnitOfWork
     {
-        ITestRepository TestRepository { get; }
+        IEmployeeRepository EmployeeRepository { get; }
+        ILeaveRepository LeaveRepository { get; }
 
         Task CompleteAsync();
         Task CompleteAsync(Audit audit);

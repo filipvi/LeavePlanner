@@ -8,6 +8,11 @@ namespace LeavePlanner.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        public IActionResult LandPage()
+        {
+            return View();
+        }
+
         public IActionResult GlobalError()
         {
             return View("ErrorAnnounced");

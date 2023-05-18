@@ -8,16 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Enums\**" />
     <Compile Remove="wwwroot\js\app\services\**" />
     <Compile Remove="wwwroot\manual\**" />
-    <Content Remove="Models\Enums\**" />
     <Content Remove="wwwroot\js\app\services\**" />
     <Content Remove="wwwroot\manual\**" />
-    <EmbeddedResource Remove="Models\Enums\**" />
     <EmbeddedResource Remove="wwwroot\js\app\services\**" />
     <EmbeddedResource Remove="wwwroot\manual\**" />
-    <None Remove="Models\Enums\**" />
     <None Remove="wwwroot\js\app\services\**" />
     <None Remove="wwwroot\manual\**" />
   </ItemGroup>

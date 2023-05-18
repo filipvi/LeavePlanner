@@ -1,0 +1,55 @@
+﻿@model LeavePlanner.Models.ViewModels.Employee.DetailsEmployeeViewModel
+
+@*Laptop*@
+<div class="row d-none d-md-block d-lg-none d-md-block d-lg-none d-lg-block d-xl-none d-xl-block">
+    <div class="d-flex mt-3">
+        <a asp-controller="Employee" asp-action="Employees"
+           class="btn btn-secondary waves-effect waves-themed mr-2 ml-auto">
+            <span class="far fa-arrow-left mr-1"></span> Employees
+        </a>
+        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id"
+           class="btn btn-success waves-effect waves-themed mr-2">
+            <span class="far fa-edit mr-1"></span> Edit
+        </a>
+        <button class="btn btn-danger waves-effect waves-themed js-delete mr-2">
+            <span class="far fa-trash-alt mr-2"></span>Delete
+        </button>
+    </div>
+</div>
+
+@*Tablet*@
+<div class="d-none d-sm-block d-md-none">
+    <div class="row my-3 mx-2">
+        <a asp-controller="Employee" asp-action="Employees"
+           class="btn btn-secondary btn-block waves-effect waves-themed mr-2 ml-auto">
+            <span class="far fa-arrow-left mr-1"></span> Employees
+        </a>
+        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id"
+           class="btn btn-success btn-block waves-effect waves-themed mr-2">
+            <span class="far fa-edit mr-1"></span> Edit
+        </a>
+        <button class="btn btn-danger btn-block waves-effect waves-themed js-delete">
+            <span class="far fa-trash-alt mr-2"></span>Delete
+        </button>
+    </div>
+</div>
+
+
+@*Mobile*@
+<div class="row d-block d-sm-none">
+    <div class="col-lg-12">
+        <div class="frame-wrap mt-3">
+            <a asp-controller="Employee" asp-action="Employees"
+               class="btn btn-secondary btn-block waves-effect waves-themed mr-2 ml-auto">
+                <span class="far fa-arrow-left mr-1"></span> Employees
+            </a>
+            <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id"
+               class="btn btn-success btn-block waves-effect waves-themed mr-2">
+                <span class="far fa-edit mr-1"></span> Edit
+            </a>
+            <button class="btn btn-danger btn-block waves-effect waves-themed js-delete">
+                <span class="far fa-trash-alt mr-2"></span>Delete
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model LeavePlanner.Models.ViewModels.HelpViewModel
+﻿@model LeavePlanner.Models.ViewModels.HelpViewModel
 
 @{
     var requiredExists = Model.RequiredStepsMessages != null && Model.RequiredStepsMessages.Count > 0 ? "" : "d-none";
@@ -11,7 +10,7 @@
         <div class="modal-content">
             <div class="modal-header text-white pb-0">
                 <h4 class="modal-title fw-500">
-                    Pomoć
+                    Help
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Zatvori">
                     <span aria-hidden="true">
